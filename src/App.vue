@@ -1,8 +1,5 @@
 <script setup>
 import { ref, watchEffect } from 'vue'
-import { supabase } from '@/lib/supabase'
-
-console.log(supabase);
 
 const theme = ref(localStorage.getItem('theme') || 'light');
 
