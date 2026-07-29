@@ -15,8 +15,6 @@ function toggleTheme() {
 
 <template>
   <div id="app">
-    <h1>IRON</h1>
-
     <button
       class="theme-switch"
       :class="{ 'is-dark': theme === 'dark' }"
@@ -27,6 +25,8 @@ function toggleTheme() {
       <span class="theme-switch__icon">🌙</span>
       <span class="theme-switch__thumb"></span>
     </button>
+
+    <router-view />
   </div>
 </template>
 
