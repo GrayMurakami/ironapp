@@ -13,6 +13,24 @@ const gender = ref('male');
 const isLoading = ref(false);
 const error = ref('');
 
+async function submit() {
+  error.value = '';
+  isLoading.value = true;
+
+  try {
+    if (mode.value === 'signup') {
+      await auth.signUp(email.value, password.value, gender.value);
+    } else {
+      await auth.signIn(email.value, password.value);
+    }
+    router.push('/');
+  } catch (e) {
+    error.value = e.message;
+  } finally {
+    isLoading.value = false;
+  }
+}
+
 
 </script>
 
