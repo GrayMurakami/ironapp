@@ -41,7 +41,7 @@ const submitLabel = computed(() =>
 );
 
 async function submit() {
-  error.value = '';
+  error.value = ''
   isLoading.value = true;
 
   try {
@@ -59,7 +59,7 @@ async function submit() {
 }
 
 async function tryDemo() {
-  error.value = '';
+  error.value = ''
   isLoading.value = true;
 
   try {
@@ -70,6 +70,12 @@ async function tryDemo() {
   } finally {
     isLoading.value = false;
   }
+}
+
+function resetFields() {
+  email.value = ''
+  password.value = ''
+  error.value = ''
 }
 </script>
 
@@ -95,19 +101,19 @@ async function tryDemo() {
       <div class="tabs">
         <button
           :class="{ active: !isSignUp }"
-          @click="mode = 'signin'; error = ''"  
+          @click="mode = 'signin'; resetFields()"  
         >
           SignIn
         </button>
         <button
           :class="{ active: isSignUp }"
-          @click="mode = 'signup'; error = ''"
+          @click="mode = 'signup'; resetFields()"
         >
           SignUp
         </button>
       </div>
 
-      <form @submit.prevent="submit">
+      <form @submit.prevent="submit" autocomplete="off">
         <div
           v-if="isSignUp"
           class="gender"  
@@ -135,6 +141,7 @@ async function tryDemo() {
           <input 
             v-model="email"
             type="email"
+            autocomplete="off"
             placeholder="gray@app.com"
             required
           />
@@ -155,6 +162,7 @@ async function tryDemo() {
           <input
             v-model="password"
             :type="showPass ? 'text' : 'password'"
+            autocomplete="new-password"
             placeholder="At least 6 characters"
             minlength="6"
             required
