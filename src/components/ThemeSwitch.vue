@@ -47,11 +47,11 @@ watchEffect(() => {
 .switch__icon {
   position: relative;
   z-index: 1;
-  width: 24px;
+  width: 23px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  /* font-size: 12px; */
   line-height: 1;
   color: var(--text-secondary);
   opacity: .35;
