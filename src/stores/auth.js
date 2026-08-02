@@ -29,13 +29,13 @@ export const useAuthStore = defineStore('auth', () => {
     });
   }
 
-  async function signUp(email, password, gender) {
+  async function signUp(gender, email, password) {
     const { error } = await supabase.auth.signUp({
-      email,
-      password,
       options: {
         data: { gender }
       },
+      email,
+      password,
     });
     if (error) throw error
   }
