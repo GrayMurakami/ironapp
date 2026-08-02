@@ -38,12 +38,32 @@ async function submit() {
       {{ gender === 'female' ? 'IRONWOMAN' : 'IRONMAN' }}
     </h1>
 
+    <div
+      v-if="mode === 'signup'"
+      class="gender-select"  
+    >
+      <button
+        type="button"
+        :class="{ active: gender === 'male' }"
+        @click="gender = 'male'"
+      >
+        Man
+      </button>
+      <button
+        type="button"
+        :class="{ active: gender === 'female' }"
+        @click="gender = 'female'"
+      >
+        Woman
+      </button>
+    </div>
+
     <div class="tabs">
       <button
         :class="{ active: mode === 'signin' }"
         @click="mode = 'signin'"  
       >
-        LogIn
+        SignIn
       </button>
       <button
         :class="{ active: mode === 'signup' }"
@@ -67,26 +87,6 @@ async function submit() {
         required
         minlength="6"
       />
-
-      <div
-        v-if="mode === 'signup'"
-        class="gender-select"  
-      >
-        <button
-          type="button"
-          :class="{ active: gender === 'male' }"
-          @click="gender = 'male'"
-        >
-          Man
-        </button>
-        <button
-          type="button"
-          :class="{ active: gender === 'female' }"
-          @click="gender = 'female'"
-        >
-          Woman
-        </button>
-      </div>
 
       <p
         v-if="error"
