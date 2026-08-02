@@ -5,6 +5,7 @@
   --font: 'Outfit', sans-serif;
   --mono: 'Space Mono', monospace;
   --display: 'Anton', sans-serif;
+  --error-red: #ef4444;
 }
 
 [data-theme='dark'] {

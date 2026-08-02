@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { supabase } from '@/lib/supabase'
 
@@ -6,6 +6,13 @@ export const useAuthStore = defineStore('auth', () => {
   const user = ref(null);
   const profile = ref(null);
   const loading = ref(true);
+
+  const appNameDemo = computed(() => {
+    if (user.value?.email === import.meta.env.VITE_DEMO_EMAIL) return 'IRONDEMO'
+    return profile.value?.gender === 'female'
+      ? 'IRONWOMAN'
+      : 'IRONMAN'
+  })
 
   async function fetchProfile(userId) {
     const { data } = await supabase
@@ -29,13 +36,13 @@ export const useAuthStore = defineStore('auth', () => {
     });
   }
 
-  async function signUp(gender, email, password) {
+  async function signUp(email, password, gender) {
     const { error } = await supabase.auth.signUp({
+      email,
+      password,
       options: {
         data: { gender }
       },
-      email,
-      password,
     });
     if (error) throw error
   }
@@ -48,6 +55,13 @@ export const useAuthStore = defineStore('auth', () => {
     if (error) throw error
   }
 
+  async function loginAsGuest() {
+    return signIn(
+      import.meta.env.VITE_DEMO_EMAIL,
+      import.meta.env.VITE_DEMO_PASSWORD
+    )
+  }
+
   async function signOut() {
     await supabase.auth.signOut();
   }
@@ -56,9 +70,11 @@ export const useAuthStore = defineStore('auth', () => {
     user,
     profile,
     loading,
+    appNameDemo,
     init,
     signUp,
     signIn,
+    loginAsGuest,
     signOut
   }
 });

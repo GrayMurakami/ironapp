@@ -46,10 +46,24 @@ async function submit() {
 
   try {
     if (isSignUp.value) {
-      await auth.signUp(gender.value, email.value, password.value);
+      await auth.signUp(email.value, password.value, gender.value);
     } else {
       await auth.signIn(email.value, password.value);
     }
+    router.push('/');
+  } catch (e) {
+    error.value = e.message;
+  } finally {
+    isLoading.value = false;
+  }
+}
+
+async function tryDemo() {
+  error.value = '';
+  isLoading.value = true;
+
+  try {
+    await auth.loginAsGuest();
     router.push('/');
   } catch (e) {
     error.value = e.message;
@@ -184,6 +198,8 @@ async function submit() {
         <button
           type="button"
           class="demo"
+          :disabled="isLoading"
+          @click="tryDemo"
         >
           <span>
             Try the Demo
@@ -407,7 +423,7 @@ form {
   border: 1px solid rgba(239, 68, 68, .25);
   font-size: 12px;
   font-weight: 600;
-  color: #ef4444;
+  color: var(--error-red);
 }
 
 .forgot { 
