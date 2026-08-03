@@ -6,6 +6,8 @@ import { useAuthStore } from '@/stores/auth';
 const router = useRouter();
 const auth = useAuthStore();
 
+const awaitingConfirmation = ref(false);
+
 const mode = ref('signin');
 const gender = ref('male');
 const email = ref('');
@@ -47,6 +49,10 @@ async function submit() {
   try {
     if (isSignUp.value) {
       await auth.signUp(email.value, password.value, gender.value);
+      if (!data.session) {
+        awaitingConfirmation.value = true;
+        return
+      }
     } else {
       await auth.signIn(email.value, password.value);
     }
