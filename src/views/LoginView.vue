@@ -91,138 +91,156 @@ function resetFields() {
     <div class="auth__noise" />
 
     <div class="auth__inner">
-      <header class="auth__head">
-        <div class="auth__tagline">
-          {{ tagLine }}
-        </div>
-      </header>
-
-      <h1 class="auth__brand">
-        {{ appName }}
-      </h1>
-      <p class="auth__sub">
-        {{ subtitle }}
-      </p>
-
-      <div class="tabs">
-        <button
-          :class="{ active: !isSignUp }"
-          @click="mode = 'signin'; resetFields()"  
-        >
-          SignIn
-        </button>
-        <button
-          :class="{ active: isSignUp }"
-          @click="mode = 'signup'; resetFields()"
-        >
-          SignUp
-        </button>
-      </div>
-
-      <form @submit.prevent="submit" autocomplete="off">
-        <div
-          v-if="isSignUp"
-          class="gender"  
-        >
-          <button
-            type="button"
-            :class="{ active: gender === 'male' }"
-            @click="gender = 'male'"
-          >
-            Man
-          </button>
-          <button
-            type="button"
-            :class="{ active: gender === 'female' }"
-            @click="gender = 'female'"
-          >
-            Woman
-          </button>
-        </div>
-
-        <label class="field">
-          <span class="field__label">
-            Email
-          </span>
-          <input 
-            v-model="email"
-            type="email"
-            autocomplete="off"
-            placeholder="gray@app.com"
-            required
-          />
-        </label>
-
-        <label class="field">
-          <span class="field__label">
-            <span>
-              Password
-            </span>
-            <span
-              class="field__toggle"
-              @click="showPass = !showPass"
-            >
-              {{ showPass ? 'Hide' : 'Show' }}
-            </span>
-          </span>
-          <input
-            v-model="password"
-            :type="showPass ? 'text' : 'password'"
-            autocomplete="new-password"
-            placeholder="At least 6 characters"
-            minlength="6"
-            required
-          />
-        </label>
-
-        <p
-          v-if="error"
-          class="error"
-        >
-          {{ error }}
+      <template v-if="awaitingConfirmation">
+        <h1 class="auth__brand">
+          Almost done
+        </h1>
+        <p class="auth__sub">
+          I sent an email to {{ email }}. Click the link in the email to verify your account and log In.
         </p>
-
-        <div
-          v-if="!isSignUp"
-          class="forgot"
-        >
-          <span>
-            Forgot password?
-          </span>
-        </div>
-
-        <div class="spacer" />
-
-        <button
-          type="submit"
-          class="submit"
-          :disabled="isLoading"
-        >
-          {{ submitLabel }}
-        </button>
-
-        <div class="or">
-          <i />
-            <span>
-              OR
-            </span>
-          <i />
-        </div>
-
         <button
           type="button"
-          class="demo"
-          :disabled="isLoading"
-          @click="tryDemo"
+          class="submit"
+          @click="awaitingConfirmation = false; mode = 'signin'"
         >
-          <span>
-            Try the Demo
-          </span>
-          <span class="demo__hint">
-            no account
-          </span>
+          To the entrance!
         </button>
-      </form>
+      </template>
+
+      <template v-else>
+        <header class="auth__head">
+          <div class="auth__tagline">
+            {{ tagLine }}
+          </div>
+        </header>
+
+        <h1 class="auth__brand">
+          {{ appName }}
+        </h1>
+        <p class="auth__sub">
+          {{ subtitle }}
+        </p>
+
+        <div class="tabs">
+          <button
+            :class="{ active: !isSignUp }"
+            @click="mode = 'signin'; resetFields()"  
+          >
+            SignIn
+          </button>
+          <button
+            :class="{ active: isSignUp }"
+            @click="mode = 'signup'; resetFields()"
+          >
+            SignUp
+          </button>
+        </div>
+
+        <form @submit.prevent="submit" autocomplete="off">
+          <div
+            v-if="isSignUp"
+            class="gender"  
+          >
+            <button
+              type="button"
+              :class="{ active: gender === 'male' }"
+              @click="gender = 'male'"
+            >
+              Man
+            </button>
+            <button
+              type="button"
+              :class="{ active: gender === 'female' }"
+              @click="gender = 'female'"
+            >
+              Woman
+            </button>
+          </div>
+
+          <label class="field">
+            <span class="field__label">
+              Email
+            </span>
+            <input 
+              v-model="email"
+              type="email"
+              autocomplete="off"
+              placeholder="gray@app.com"
+              required
+            />
+          </label>
+
+          <label class="field">
+            <span class="field__label">
+              <span>
+                Password
+              </span>
+              <span
+                class="field__toggle"
+                @click="showPass = !showPass"
+              >
+                {{ showPass ? 'Hide' : 'Show' }}
+              </span>
+            </span>
+            <input
+              v-model="password"
+              :type="showPass ? 'text' : 'password'"
+              autocomplete="new-password"
+              placeholder="At least 6 characters"
+              minlength="6"
+              required
+            />
+          </label>
+
+          <p
+            v-if="error"
+            class="error"
+          >
+            {{ error }}
+          </p>
+
+          <div
+            v-if="!isSignUp"
+            class="forgot"
+          >
+            <span>
+              Forgot password?
+            </span>
+          </div>
+
+          <div class="spacer" />
+
+          <button
+            type="submit"
+            class="submit"
+            :disabled="isLoading"
+          >
+            {{ submitLabel }}
+          </button>
+
+          <div class="or">
+            <i />
+              <span>
+                OR
+              </span>
+            <i />
+          </div>
+
+          <button
+            type="button"
+            class="demo"
+            :disabled="isLoading"
+            @click="tryDemo"
+          >
+            <span>
+              Try the Demo
+            </span>
+            <span class="demo__hint">
+              no account
+            </span>
+          </button>
+        </form>
+      </template>
     </div>
   </div>
 </template>
