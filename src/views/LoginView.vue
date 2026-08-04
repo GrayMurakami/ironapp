@@ -65,7 +65,7 @@ async function submit() {
 }
 
 async function tryDemo() {
-  error.value = ''
+  error.value = '';
   isLoading.value = true;
 
   try {
@@ -79,9 +79,9 @@ async function tryDemo() {
 }
 
 function resetFields() {
-  email.value = ''
-  password.value = ''
-  error.value = ''
+  email.value = '';
+  password.value = '';
+  error.value = '';
 }
 </script>
 

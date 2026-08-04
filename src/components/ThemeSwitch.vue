@@ -5,7 +5,7 @@ const theme = ref(localStorage.getItem('theme') || 'dark');
 
 watchEffect(() => {
   document.documentElement.setAttribute('data-theme', theme.value);
-  localStorage.setItem('theme', theme.value)
+  localStorage.setItem('theme', theme.value);
 });
 </script>
 
