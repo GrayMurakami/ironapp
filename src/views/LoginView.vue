@@ -48,7 +48,7 @@ async function submit() {
 
   try {
     if (isSignUp.value) {
-      await auth.signUp(email.value, password.value, gender.value);
+      const data = await auth.signUp(email.value, password.value, gender.value);
       if (!data.session) {
         awaitingConfirmation.value = true;
         return
