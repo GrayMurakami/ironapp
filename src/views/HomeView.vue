@@ -42,7 +42,7 @@ onMounted(() => {
     >
       <!-- later <OnboardingWizard /> -->
       <p>
-        Onboarding will be here
+        Onboarding will be here!
       </p>
     </div>
 
