@@ -92,15 +92,19 @@ function resetFields() {
 
     <div class="auth__inner">
       <template v-if="awaitingConfirmation">
-        <h1 class="auth__brand">
+        <div class="confirm__icon">
+          ✉
+        </div>
+        <div class="confirm__title">
           Almost done
-        </h1>
-        <p class="auth__sub">
-          I sent an email to {{ email }}. Click the link in the email to verify your account and log In.
+        </div>
+        <p class="confirm__text">
+          I sent an email to <b>{{ email }}</b>.
+          <br />Click the link in the email to verify your account and log In.
         </p>
         <button
           type="button"
-          class="submit"
+          class="confirm__btn"
           @click="awaitingConfirmation = false; mode = 'signin'"
         >
           To the entrance!
@@ -292,6 +296,54 @@ function resetFields() {
   display: flex;
   flex-direction: column;
   padding: 54px 26px 30px;
+}
+
+.confirm__icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  border: 1.5px solid var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  margin-bottom: 18px;
+}
+
+.confirm__title {
+  font-family: 'Anton', sans-serif;
+  font-size: 34px;
+  line-height: .95;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.confirm__text {
+  margin: 20px 0 28px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.confirm__text b { 
+  color: var(--text); 
+  font-weight: 700 
+}
+
+.confirm__btn {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 14px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 8px 20px var(--accent-glow);
 }
 
 .auth__head {
