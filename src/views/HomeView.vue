@@ -3,6 +3,7 @@ import { onMounted, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/auth'
 import { useProgramStore } from '@/stores/program'
+import OnboardingWizard from '@/components/onboarding/OnboardingWizard.vue'
 
 const auth = useAuthStore();
 const program = useProgramStore();
@@ -40,10 +41,7 @@ onMounted(() => {
       v-else-if="showOnboarding"
       class="home__onboarding"    
     >
-      <!-- later <OnboardingWizard /> -->
-      <p>
-        Onboarding will be here!
-      </p>
+      <OnboardingWizard />
     </div>
 
     <div
