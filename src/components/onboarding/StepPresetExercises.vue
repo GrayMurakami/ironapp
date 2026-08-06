@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { exercisePresets } from '@/data/exercisePresets.js'
+import '@/styles/step.css'
 
 const props = defineProps({
   days: { type: Array, required: true },
@@ -130,5 +131,119 @@ function toggleExercise(exercise) {
 </template>
 
 <style scoped>
+.day-tabs { 
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  margin: 14px 0 16px 
+}
 
+.day-tab {
+  flex: none;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  color: var(--text-secondary);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.day-tab.active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.day-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2px;
+  margin-bottom: 12px;
+}
+
+.day-header__name { 
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text) 
+}
+
+.day-header__count {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .6px;
+  color: var(--text-muted);
+}
+
+.groups { 
+  display: flex;
+  flex-direction: column;
+  gap: 8px 
+}
+
+.group {
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+}
+
+.group__head {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 11px;
+  padding: 14px 15px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-size: 14.5px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.group__head span:first-child { 
+  flex: 1 
+}
+
+.group__arrow { 
+  font-size: 11px;
+  color: var(--text-muted);
+  transition: transform .2s 
+}
+
+.group__arrow.open { 
+  transform: rotate(180deg) 
+}
+
+.group__exercises {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0 15px 14px;
+}
+
+.exercise-chip {
+  padding: 8px 12px;
+  border-radius: 9px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.exercise-chip.active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+}
 </style>

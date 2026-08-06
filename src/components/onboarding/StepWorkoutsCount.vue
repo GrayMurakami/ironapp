@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue'
+import '@/styles/step.css'
 
 const emit = defineEmits(['select']);
 
@@ -68,64 +69,6 @@ function submit() {
 </template>
 
 <style scoped>
-.step { 
-  padding: 0 24px 34px;
-  display: flex;
-  flex-direction: column;
-  min-height: 100dvh 
-}
-
-.step__progress { 
-  padding: 60px 0 16px 
-}
-
-.step__label {
-  font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 14px;
-}
-
-.step__bar { 
-  display: flex;
-  gap: 6px;
-  margin-bottom: 20px 
-}
-
-.seg { 
-  flex: 1;
-  height: 3px;
-  border-radius: 2px;
-  background: var(--border) 
-}
-
-.seg--on { 
-  background: var(--accent) 
-}
-
-.step__title {
-  font-family: 'Anton', sans-serif;
-  font-size: 38px;
-  font-weight: 400;
-  line-height: .95;
-  letter-spacing: .5px;
-  text-transform: uppercase;
-  color: var(--brand);
-  margin: 0;
-}
-
-.step__sub {
-  margin: 12px 0 24px;
-  font-size: 14px;
-  line-height: 1.5;
-  color: var(--text-secondary);
-  max-width: 290px;
-  text-wrap: pretty;
-}
-
 .options {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -165,30 +108,5 @@ function submit() {
   font-size: 11px;
   font-weight: 700;
   opacity: .7 
-}
-
-.step__footer { 
-  margin-top: auto;
-  padding-top: 14px;
-  padding-bottom: 6px
-}
-
-.continue {
-  width: 100%;
-  padding: 15px;
-  border: none;
-  border-radius: 14px;
-  background: var(--accent);
-  color: var(--on-accent);
-  font-family: var(--font);
-  font-size: 15px;
-  font-weight: 800;
-  cursor: pointer;
-  box-shadow: 0 8px 24px var(--accent-glow);
-}
-
-.continue:disabled { 
-  opacity: .45;
-  cursor: default 
 }
 </style>
