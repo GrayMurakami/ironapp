@@ -69,14 +69,14 @@ function submit() {
 
 <style scoped>
 .step { 
-  padding: 0 24px 24px;
+  padding: 0 24px 34px;
   display: flex;
   flex-direction: column;
   min-height: 100dvh 
 }
 
 .step__progress { 
-  padding: 20px 0 16px 
+  padding: 60px 0 16px 
 }
 
 .step__label {
@@ -87,17 +87,6 @@ function submit() {
   text-transform: uppercase;
   color: var(--text-muted);
   margin-bottom: 14px;
-}
-
-.step__bar { 
-  display: flex;
-  gap: 6px 
-}
-
-.step__bar::before,
-.step__bar::after,
-.step__bar-fill { 
-  display: none 
 }
 
 .step__bar { 
@@ -124,7 +113,7 @@ function submit() {
   line-height: .95;
   letter-spacing: .5px;
   text-transform: uppercase;
-  color: var(--brand, var(--text));
+  color: var(--brand);
   margin: 0;
 }
 
@@ -180,7 +169,8 @@ function submit() {
 
 .step__footer { 
   margin-top: auto;
-  padding-top: 14px 
+  padding-top: 14px;
+  padding-bottom: 6px
 }
 
 .continue {
