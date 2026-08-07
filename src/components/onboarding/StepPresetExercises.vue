@@ -66,12 +66,12 @@ function toggleExercise(exercise) {
       </button>
     </div>
 
-    <div class="day-header">
-      <span class="day-header__name">
-        {{ days[activeDayIndex].name }}
-      </span>
+    <div class="day-header">   
       <span class="day-header__count">
-        {{ days[activeDayIndex].exercises.length }} added
+        <b class="day-header__num">
+          {{ days[activeDayIndex].exercises.length }}
+        </b>
+          exercises added
       </span>
     </div>
 
@@ -160,29 +160,34 @@ function toggleExercise(exercise) {
 .day-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   padding: 0 2px;
   margin-bottom: 12px;
 }
 
-.day-header__name { 
-  font-size: 15px;
-  font-weight: 800;
-  color: var(--text) 
-}
-
 .day-header__count {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  background: var(--accent-soft);
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: .6px;
-  color: var(--text-muted);
+  color: var(--accent);
+}
+
+.day-header__num { 
+  font-size: 15px 
 }
 
 .groups { 
   display: flex;
   flex-direction: column;
-  gap: 8px 
+  gap: 8px;
+  margin-bottom: 20px
 }
 
 .group {
