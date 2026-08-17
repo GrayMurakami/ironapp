@@ -179,5 +179,128 @@ function removeExercise(index) {
 </template>
 
 <style scoped>
+.day-card {
+  border-radius: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+  padding: 16px;
+  margin-bottom: 20px;
+}
 
+.day-card__name {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.day-card__empty {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 14px 0;
+}
+
+.exercise-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.exercise-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+}
+
+.exercise-row__name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.exercise-row__remove {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.exercise-row__remove:hover {
+  color: var(--error-red);
+}
+
+.add-btn {
+  padding: 13px;
+  border-radius: 10px;
+  border: 1.5px dashed var(--border);
+  color: var(--text-muted);
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.add-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.add-form input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 14px;
+}
+
+.add-form__actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.add-form__cancel {
+  flex: 1;
+  padding: 11px;
+  border-radius: 10px;
+  background: none;
+  border: 1.5px solid var(--border);
+  color: var(--text-secondary);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.add-form__confirm {
+  flex: 1;
+  padding: 11px;
+  border-radius: 10px;
+  border: none;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
 </style>
