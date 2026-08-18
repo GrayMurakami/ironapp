@@ -118,7 +118,11 @@ function toggleExercise(exercise) {
         class="back"
         @click="emit('back')"  
       >
-        ← Back
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M11 6L5 12L11 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M18 6L12 12L18 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        Back
       </button>
       <button
         class="continue"
@@ -131,32 +135,6 @@ function toggleExercise(exercise) {
 </template>
 
 <style scoped>
-.day-tabs { 
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  margin: 14px 0 16px 
-}
-
-.day-tab {
-  flex: none;
-  padding: 8px 14px;
-  border-radius: 10px;
-  background: var(--bg-card);
-  border: 1.5px solid var(--border);
-  color: var(--text-secondary);
-  font-family: var(--font);
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.day-tab.active {
-  background: var(--accent-soft);
-  border-color: var(--accent);
-  color: var(--accent);
-}
-
 .day-header {
   display: flex;
   align-items: center;

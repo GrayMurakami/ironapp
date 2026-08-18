@@ -165,7 +165,11 @@ function removeExercise(index) {
         class="back"
         @click="emit('back')"
       >
-        ← Back
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M11 6L5 12L11 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M18 6L12 12L18 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        Back
       </button>
       <button 
         class="continue" 
@@ -199,6 +203,7 @@ function removeExercise(index) {
   font-size: 15px;
   font-weight: 700;
   margin-bottom: 14px;
+  outline: none;
 }
 
 .day-card__empty {
