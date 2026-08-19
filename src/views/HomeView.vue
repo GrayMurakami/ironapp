@@ -1,14 +1,12 @@
 <script setup>
 import { onMounted, computed } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useAuthStore } from '@/stores/auth'
 import { useProgramStore } from '@/stores/program'
 import OnboardingWizard from '@/components/onboarding/OnboardingWizard.vue'
+import WorkoutBoard from '@/components/workout/WorkoutBoard.vue'
 
-const auth = useAuthStore();
 const program = useProgramStore();
 
-const { appNameDemo } = storeToRefs(auth);
 const { loaded, error, hasDays } = storeToRefs(program);
 
 const showOnboarding = computed(() => loaded.value && !hasDays.value);
@@ -46,18 +44,9 @@ onMounted(() => {
 
     <div
       v-else
-      class="home_main"
+      class="home__main"
     >
-      <h1>
-        {{ appNameDemo }}
-      </h1>
-      <button @click="auth.signOut()">
-        Log Out
-      </button>
+      <WorkoutBoard />
     </div>
   </div>
 </template>
-
-<style scoped>
-
-</style>

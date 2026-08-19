@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { exercisePresets } from '@/data/exercisePresets.js'
-import '@/styles/step.css'
+import '@/styles/shared.css'
 
 const props = defineProps({
   days: { type: Array, required: true },

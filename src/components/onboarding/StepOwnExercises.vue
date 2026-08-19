@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue'
-import '@/styles/step.css'
+import '@/styles/shared.css'
 
 const props = defineProps({
   days: { type: Array, required: true },
