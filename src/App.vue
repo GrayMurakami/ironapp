@@ -13,7 +13,8 @@ import ThemeSwitch from '@/components/ThemeSwitch.vue'
 .app-theme-switch {
   position: fixed; 
   top: 30px; 
-  right: 26px; 
+  left: 50%;
+  transform: translateX(calc(195px - 100%));
   z-index: 10 
 }
 </style>

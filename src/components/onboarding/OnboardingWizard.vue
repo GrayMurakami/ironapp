@@ -10,7 +10,7 @@ const program = useProgramStore();
 const currentStep = ref(1);
 const workoutsCount = ref(null);
 const days = ref([]);
-const isSaving = ref(fasle);
+const isSaving = ref(false);
 const saveError = ref(null);
 
 function goToStep(step) {
@@ -31,7 +31,7 @@ async function finishOnboarding() {
   isSaving.value = true;
 
   try {
-    await program.saveInitialProgram(compileStyleAsync.value);
+    await program.saveInitialProgram(days.value);
   } catch (e) {
     saveError.value = e.message;
   } finally {
