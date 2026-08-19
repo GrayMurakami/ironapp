@@ -10,10 +10,12 @@ export const useProgramStore = defineStore('program', () => {
   const hasDays = computed(() => days.value.length > 0);
  
   async function saveInitialProgram(newDays) {
+    const { data: { user } } = await supabase.auth.getUser();
+
     for (const day of newDays) {
       const { data: dayRow, error: dayError } = await supabase
         .from('program_days')
-        .insert({ name: day.name, order_index: newDays.indexOf(day) })
+        .insert({ name: day.name, order_index: newDays.indexOf(day), user_id: user.id })
         .select()
         .single()
 
