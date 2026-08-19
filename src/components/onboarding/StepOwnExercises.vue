@@ -4,6 +4,7 @@ import '@/styles/step.css'
 
 const props = defineProps({
   days: { type: Array, required: true },
+  isSaving: { type: Boolean, default: false },
 });
 
 const emit = defineEmits(['back', 'finish']);
@@ -173,10 +174,10 @@ function removeExercise(index) {
       </button>
       <button 
         class="continue" 
-        :disabled="!canFinish"
+        :disabled="!canFinish || isSaving"
         @click="emit('finish')"
       >
-        Start training
+        {{ isSaving ? 'Saving・・・' : 'Start training' }}
       </button>
     </div>
   </div>

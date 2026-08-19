@@ -1,4 +1,6 @@
-.step { 
+.step {
+  max-width: 430px;
+  margin: 0 auto;
   padding: 0 24px 34px;
   display: flex;
   flex-direction: column;
