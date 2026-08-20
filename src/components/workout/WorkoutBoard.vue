@@ -45,6 +45,11 @@ const progressPercent = computed(() => {
   if (totalSets.value === 0) return 0
   return Math.round((doneSets.value / totalSets.value) * 100)
 });
+
+function toggleSetDone(exercise, setIndex) {
+  exercise.sets_data[setIndex].done = !exercise.sets_data[setIndex].done;
+}
+
 </script>
 
 <template>
@@ -110,6 +115,74 @@ const progressPercent = computed(() => {
           <span class="stat-card__label">
             done
           </span>
+        </div>
+      </div>
+    </div>
+
+    <div
+      v-if="activeDay"
+      class="exercises"
+    >
+      <div
+        v-for="(exercise, exIndex) in activeDay.program_exercises"
+        :key="exercise.id"
+        class="exercise-card"
+      >
+        <div class="exercise-card__head">
+          <span class="exercise-card__num">
+            {{ String(exIndex + 1).padStart(2, '0') }}
+          </span>
+          <div class="exercise-card__title">
+            <span class="exercise-card__name">
+              {{ exercise.name }}
+            </span>
+            <span
+              v-if="exercise.rest_seconds"
+              class="exercise-card__tag"
+            >
+              Rest {{ exercise.rest_seconds }}s
+            </span>
+          </div>
+        </div>
+
+        <div class="sets">
+          <div
+            v-for="(set, setIndex) in exercise.sets_data"
+            :key="setIndex"
+            class="set-row"
+          >
+            <label class="set-field">
+              <span class="set-field__label">
+                KG
+              </span>
+              <input
+                v-model.number="set.weight"
+                type="number"
+                inputmode="decimal"
+                placeholder="-"  
+              />
+            </label>
+
+            <label class="set-field">
+              <span class="set-field__label">
+                REPS
+              </span>
+              <input
+                v-model.number="set.reps"
+                type="number"
+                inputmode="numeric"
+                placeholder="-"  
+              />
+            </label>
+
+            <button
+              class="set-check"
+              :class="{ done: set.done }"
+              @click="toggleSetDone(exercise, setIndex)"
+            >
+              {{ set.done ? '✓' : setIndex + 1 }}
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -206,5 +279,124 @@ const progressPercent = computed(() => {
   text-transform: uppercase;
   color: var(--text-muted);
   margin-top: 2px;
+}
+
+.exercises {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.exercise-card {
+  border-radius: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+  padding: 16px;
+}
+
+.exercise-card__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.exercise-card__num {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1.5px solid var(--error-red);
+  color: var(--error-red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.exercise-card__title {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.exercise-card__name {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.exercise-card__tag {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.sets {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.set-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 8px;
+  align-items: end;
+}
+
+.set-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.set-field__label {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+
+.set-field input {
+  width: 100%;
+  padding: 10px 10px;
+  border-radius: 10px;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 700;
+  outline: none;
+  transition: border-color .2s;
+}
+
+.set-field input:focus {
+  border-color: var(--accent);
+}
+
+.set-check {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  color: var(--text-secondary);
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .2s;
+}
+
+.set-check.done {
+  background: var(--green, var(--accent));
+  border-color: var(--green, var(--accent));
+  color: var(--on-accent);
 }
 </style>
