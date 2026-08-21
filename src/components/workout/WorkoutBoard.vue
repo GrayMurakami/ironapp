@@ -50,6 +50,22 @@ function toggleSetDone(exercise, setIndex) {
   exercise.sets_data[setIndex].done = !exercise.sets_data[setIndex].done;
 }
 
+function updateSetsCount(exercise, newCount) {
+  const count = Math.max(1, Math.min(10, newCount || 1));
+  const current = exercise.sets_data.length
+
+  if (count > current) {
+    const toAdd = count - current;
+    for (let i = 0; i < toAdd; i++) {
+      exercise.sets_data.push({ weight: null, reps: null, done: false })
+    }
+  } else if (count < current) {
+    exercise.sets_data.splice(count)
+  }
+
+  exercise.sets = count;
+}
+
 </script>
 
 <template>
@@ -143,6 +159,34 @@ function toggleSetDone(exercise, setIndex) {
               Rest {{ exercise.rest_seconds }}s
             </span>
           </div>
+        </div>
+
+        <div class="exercise-card__controls">
+          <label class="control-field">
+            <span class="control-field__label">
+              SETS
+            </span>
+            <input
+              :value="exercise.sets"
+              type="number"
+              inputmode="numeric"
+              @input="updateSetsCount(exercise, Number($event.target.value))"
+            />
+          </label>
+
+          <label class="control-field">
+            <span class="control-field__label">
+              REST
+            </span>
+            <input
+              v-model.number="exercise.rest_seconds"
+              type="number"
+              inputmode="numeric"
+            />
+            <span class="control-field__unit">
+              s
+            </span>
+          </label>
         </div>
 
         <div class="sets">
