@@ -96,6 +96,16 @@ function updateSetsCount(exercise, newCount) {
 
     <div
       v-if="activeDay"
+      class="day-progress"
+    >
+      <div
+        class="day-progress__fill"
+        :style="{ width: progressPercent + '%' }"
+      />
+    </div>
+
+    <div
+      v-if="activeDay"
       class="stats-row"
     >
       <div class="progress-info">
@@ -269,6 +279,20 @@ function updateSetsCount(exercise, newCount) {
   cursor: pointer;
 }
 
+.day-progress {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.day-progress__fill {
+  height: 100%;
+  background: var(--accent);
+  transition: width .3s ease;
+}
+
 .stats-row {
   margin: 20px 0 18px;
 }
@@ -378,6 +402,51 @@ function updateSetsCount(exercise, newCount) {
   color: var(--text-muted);
 }
 
+.exercise-card__controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.control-field {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+}
+
+.control-field__label {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  color: var(--accent);
+  flex: none;
+}
+
+.control-field input {
+  flex: 1;
+  min-width: 0;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 700;
+  text-align: right;
+}
+
+.control-field__unit {
+  font-size: 11px;
+  color: var(--text-muted);
+  flex: none;
+}
+
 .sets {
   display: flex;
   flex-direction: column;
@@ -388,35 +457,47 @@ function updateSetsCount(exercise, newCount) {
   display: grid;
   grid-template-columns: 1fr 1fr auto;
   gap: 8px;
-  align-items: end;
+  align-items: center;
 }
 
 .set-field {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  border-radius: 10px;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
 }
 
 .set-field__label {
   font-family: var(--mono);
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 700;
-  letter-spacing: 1px;
-  color: var(--text-muted);
+  letter-spacing: .5px;
+  flex: none;
+}
+
+.set-field:nth-child(1) .set-field__label {
+  color: var(--accent);
+}
+
+.set-field:nth-child(2) .set-field__label {
+  color: var(--green);
 }
 
 .set-field input {
-  width: 100%;
-  padding: 10px 10px;
-  border-radius: 10px;
-  background: var(--bg);
-  border: 1.5px solid var(--border);
+  flex: 1;
+  min-width: 0;
+  padding: 10px 0;
+  background: none;
+  border: none;
+  outline: none;
   color: var(--text);
   font-family: var(--font);
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
-  outline: none;
-  transition: border-color .2s;
+  text-align: right;
 }
 
 .set-field input:focus {
