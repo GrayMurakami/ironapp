@@ -410,6 +410,7 @@ function updateSetsCount(exercise, newCount) {
 
 .control-field {
   flex: 1;
+  min-width: 0;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -461,6 +462,7 @@ function updateSetsCount(exercise, newCount) {
 }
 
 .set-field {
+  min-width: 0;
   display: flex;
   align-items: center;
   gap: 8px;
