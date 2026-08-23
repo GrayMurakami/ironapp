@@ -162,12 +162,6 @@ function updateSetsCount(exercise, newCount) {
             <span class="exercise-card__name">
               {{ exercise.name }}
             </span>
-            <span
-              v-if="exercise.rest_seconds"
-              class="exercise-card__tag"
-            >
-              Rest {{ exercise.rest_seconds }}s
-            </span>
           </div>
         </div>
 
@@ -410,6 +404,7 @@ function updateSetsCount(exercise, newCount) {
 
 .control-field {
   flex: 1;
+  height: 46px;
   min-width: 0;
   display: flex;
   align-items: center;
@@ -440,6 +435,7 @@ function updateSetsCount(exercise, newCount) {
   font-size: 15px;
   font-weight: 700;
   text-align: right;
+  -moz-appearance: textfield;
 }
 
 .control-field__unit {
@@ -462,6 +458,7 @@ function updateSetsCount(exercise, newCount) {
 }
 
 .set-field {
+  height: 46px;
   min-width: 0;
   display: flex;
   align-items: center;
@@ -500,6 +497,7 @@ function updateSetsCount(exercise, newCount) {
   font-size: 15px;
   font-weight: 700;
   text-align: right;
+  -moz-appearance: textfield;
 }
 
 .set-field input:focus {
@@ -525,5 +523,13 @@ function updateSetsCount(exercise, newCount) {
   background: var(--green, var(--accent));
   border-color: var(--green, var(--accent));
   color: var(--on-accent);
+}
+
+.control-field input::-webkit-outer-spin-button,
+.control-field input::-webkit-inner-spin-button,
+.set-field input::-webkit-outer-spin-button,
+.set-field input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 </style>
