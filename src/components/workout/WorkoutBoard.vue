@@ -166,7 +166,7 @@ function updateSetsCount(exercise, newCount) {
         </div>
 
         <div class="exercise-card__controls">
-          <label class="control-field">
+          <div class="control-field">
             <span class="control-field__label">
               SETS
             </span>
@@ -176,9 +176,9 @@ function updateSetsCount(exercise, newCount) {
               inputmode="numeric"
               @input="updateSetsCount(exercise, Number($event.target.value))"
             />
-          </label>
+          </div>
 
-          <label class="control-field">
+          <div class="control-field">
             <span class="control-field__label">
               REST
             </span>
@@ -188,9 +188,9 @@ function updateSetsCount(exercise, newCount) {
               inputmode="numeric"
             />
             <span class="control-field__unit">
-              s
+              sec.
             </span>
-          </label>
+          </div>
         </div>
 
         <div class="sets">
@@ -199,7 +199,7 @@ function updateSetsCount(exercise, newCount) {
             :key="setIndex"
             class="set-row"
           >
-            <label class="set-field">
+            <div class="set-field">
               <span class="set-field__label">
                 KG
               </span>
@@ -209,9 +209,9 @@ function updateSetsCount(exercise, newCount) {
                 inputmode="decimal"
                 placeholder="-"  
               />
-            </label>
+            </div>
 
-            <label class="set-field">
+            <div class="set-field">
               <span class="set-field__label">
                 REPS
               </span>
@@ -221,7 +221,7 @@ function updateSetsCount(exercise, newCount) {
                 inputmode="numeric"
                 placeholder="-"  
               />
-            </label>
+            </div>
 
             <button
               class="set-check"
@@ -391,33 +391,22 @@ function updateSetsCount(exercise, newCount) {
   color: var(--text);
 }
 
-.exercise-card__tag {
-  font-size: 11px;
-  color: var(--text-muted);
-}
-
 .exercise-card__controls {
   display: flex;
-  gap: 10px;
+  gap: 20px;
   margin-bottom: 16px;
 }
 
 .control-field {
-  flex: 1;
-  height: 46px;
-  min-width: 0;
+  flex: none;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 12px;
-  border-radius: 10px;
-  background: var(--bg);
-  border: 1.5px solid var(--border);
+  gap: 10px;
 }
 
 .control-field__label {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 15px;
   font-weight: 700;
   letter-spacing: .5px;
   color: var(--accent);
@@ -425,10 +414,12 @@ function updateSetsCount(exercise, newCount) {
 }
 
 .control-field input {
-  flex: 1;
-  min-width: 0;
-  background: none;
-  border: none;
+  width: 56px;
+  height: 40px;
+  padding: 0 10px;
+  border-radius: 10px;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
   outline: none;
   color: var(--text);
   font-family: var(--font);
@@ -439,9 +430,10 @@ function updateSetsCount(exercise, newCount) {
 }
 
 .control-field__unit {
-  font-size: 11px;
+  font-size: 15px;
   color: var(--text-muted);
   flex: none;
+  margin-left: -4px;
 }
 
 .sets {
@@ -453,25 +445,21 @@ function updateSetsCount(exercise, newCount) {
 .set-row {
   display: grid;
   grid-template-columns: 1fr 1fr auto;
-  gap: 8px;
+  gap: 15px;
   align-items: center;
 }
 
 .set-field {
-  height: 46px;
+  height: 40px;
   min-width: 0;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 0 12px;
-  border-radius: 10px;
-  background: var(--bg);
-  border: 1.5px solid var(--border);
+  gap: 15px;
 }
 
 .set-field__label {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 15px;
   font-weight: 700;
   letter-spacing: .5px;
   flex: none;
@@ -486,11 +474,14 @@ function updateSetsCount(exercise, newCount) {
 }
 
 .set-field input {
-  flex: 1;
+  width: 64px;
+  flex: none;
   min-width: 0;
-  padding: 10px 0;
-  background: none;
-  border: none;
+  height: 100%;
+  padding: 0 10px;
+  border-radius: 10px;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
   outline: none;
   color: var(--text);
   font-family: var(--font);
@@ -513,7 +504,7 @@ function updateSetsCount(exercise, newCount) {
   border: 1.5px solid var(--border);
   color: var(--text-secondary);
   font-family: var(--mono);
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
   cursor: pointer;
   transition: all .2s;
