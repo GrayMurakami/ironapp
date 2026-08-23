@@ -422,7 +422,7 @@ function updateSetsCount(exercise, newCount) {
   border: 1.5px solid var(--border);
   outline: none;
   color: var(--text);
-  font-family: var(--font);
+  font-family: 'Anton', sans-serif;
   font-size: 15px;
   font-weight: 700;
   text-align: right;
@@ -484,7 +484,7 @@ function updateSetsCount(exercise, newCount) {
   border: 1.5px solid var(--border);
   outline: none;
   color: var(--text);
-  font-family: var(--font);
+  font-family: 'Anton', sans-serif;
   font-size: 15px;
   font-weight: 700;
   text-align: right;
