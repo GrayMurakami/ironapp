@@ -42,6 +42,19 @@ export const useProgramStore = defineStore('program', () => {
     await fetchDays();
   }
 
+  async function updateExercise(exercise) {
+    const { error: updateError } = await supabase
+      .from('program_exercises')
+      .update({
+        sets: exercise.sets,
+        rest_seconds: exercise.rest_seconds,
+        sets_data: exercise.sets_data,
+      })
+      .eq('id', exercise.id)
+
+    if (updateError) throw updateError
+  }
+
   async function fetchDays() {
     error.value = null;
 
@@ -66,6 +79,7 @@ export const useProgramStore = defineStore('program', () => {
     error,
     hasDays,
     saveInitialProgram,
+    updateExercise,
     fetchDays
   }
 });
