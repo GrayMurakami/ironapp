@@ -4,8 +4,11 @@ import { useProgramStore } from '@/stores/program'
 
 const props = defineProps({
   exercise: { type: Object, required: true },
-  index: {type: Number, required: true },
+  index: { type: Number, required: true },
+  isEditMode: { type: Boolean, default: false },
 });
+
+const emit = defineEmits(['remove']);
 
 const program = useProgramStore();
 let saveTimer = null;
@@ -51,6 +54,12 @@ function updateSetsCount(newCount) {
           {{ exercise.name }}
         </span>
       </div>
+      <button
+        v-if="isEditMode"
+        class="exercise-card__remove"
+        @click="emit('remove')"
+        aria-label="Remove exercise"
+      />
     </div>
 
     <div class="exercise-card__grid">
@@ -104,7 +113,7 @@ function updateSetsCount(newCount) {
             v-model.number="set.weight"
             type="number"
             inputmode="decimal"
-            placeholder="—"
+            placeholder="-"
             @input="scheduleSave"
           />
         </div>
@@ -124,7 +133,7 @@ function updateSetsCount(newCount) {
             v-model.number="set.reps"
             type="number"
             inputmode="numeric"
-            placeholder="—"
+            placeholder="-"
             @input="scheduleSave"
           />
         </div>
@@ -182,6 +191,46 @@ function updateSetsCount(newCount) {
   font-size: 20px;
   font-weight: 800;
   color: var(--text);
+}
+
+.exercise-card__remove {
+  position: relative;
+  margin: -4px -7px auto auto;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  cursor: pointer;
+  flex: none;
+  transition: border-color .2s;
+}
+
+.exercise-card__remove::before,
+.exercise-card__remove::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 13px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--text-muted);
+  transform-origin: center;
+  transition: background .2s;
+}
+
+.exercise-card__remove::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.exercise-card__remove::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.exercise-card__remove:hover::before,
+.exercise-card__remove:hover::after {
+  background: var(--error-red);
 }
 
 .exercise-card__grid {

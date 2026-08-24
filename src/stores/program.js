@@ -55,6 +55,23 @@ export const useProgramStore = defineStore('program', () => {
     if (updateError) throw updateError
   }
 
+  async function deleteExercise(exerciseId) {
+    const { error: deleteError } = await supabase
+      .from('program_exercises')
+      .delete()
+      .eq('id', exerciseId)
+
+    if (deleteError) throw deleteError
+
+    for (const day of days.value) {
+      const index = day.program_exercises.findIndex((e) => e.id === exerciseId)
+      if (index !== -1) {
+        day.program_exercises.splice(index, 1)
+        break;
+      }
+    }
+  }
+
   async function fetchDays() {
     error.value = null;
 
@@ -80,6 +97,7 @@ export const useProgramStore = defineStore('program', () => {
     hasDays,
     saveInitialProgram,
     updateExercise,
+    deleteExercise,
     fetchDays
   }
 });

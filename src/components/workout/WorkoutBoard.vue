@@ -11,6 +11,7 @@ import '@/styles/shared.css'
 
 const auth = useAuthStore();
 const program = useProgramStore();
+const isEditMode = ref(false);
 
 const { appNameDemo } = storeToRefs(auth);
 const { days } = storeToRefs(program);
@@ -49,6 +50,14 @@ const progressPercent = computed(() => {
   if (totalSets.value === 0) return 0
   return Math.round((doneSets.value / totalSets.value) * 100)
 });
+
+function toggleEditMode() {
+  isEditMode.value = !isEditMode.value;
+}
+
+async function removeExercise(exerciseId) {
+  await program.deleteExercise(exerciseId);
+}
 </script>
 
 <template>
@@ -67,7 +76,9 @@ const progressPercent = computed(() => {
         </button>
         <button
           class="icon-btn"
+          :class="{ active: isEditMode }"
           aria-label="Edit"
+          @click="toggleEditMode"
         >
           <img :src="iconEdit" alt="" />
         </button>
@@ -153,6 +164,8 @@ const progressPercent = computed(() => {
         :key="exercise.id"
         :exercise="exercise"
         :index="exIndex"
+        :is-edit-mode="isEditMode"
+        @remove="removeExercise(exercise.id)"
       />
     </div>
   </div>
