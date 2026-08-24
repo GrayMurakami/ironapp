@@ -309,7 +309,8 @@ async function removeExercise(exerciseId) {
 .remove-day-btn {
   width: 100%;
   padding: 10px;
-  margin-bottom: 16px;
+  margin-top: 3px;
+  margin-bottom: 5px;
   border-radius: 10px;
   background: none;
   border: 1.5px dashed var(--error-red);
