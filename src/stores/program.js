@@ -28,7 +28,7 @@ export const useProgramStore = defineStore('program', () => {
           sets: exercise.sets,
           rest_seconds: exercise.restSeconds,
           order_index: index,
-          sets_data: Array.from({ length: exercise.sets }, () => ({weight: null, reps: null, done: false})),
+          sets_data: Array.from({ length: exercise.sets }, () => ({ weight: null, reps: null, done: false })),
         }))
 
         const { error: exercisesError } = await supabase
@@ -40,6 +40,28 @@ export const useProgramStore = defineStore('program', () => {
     }
 
     await fetchDays();
+  }
+
+  async function addExercise(dayId, name) {
+    const { data, error: insertError } = await supabase
+      .from('program_exercises')
+      .insert({
+        day_id: dayId,
+        name,
+        sets: 3,
+        rest_seconds: 90,
+        sets_data: Array.from({ length: 3 }, () => ({ weight: null, reps: null, done: false })),
+        order_index: 999,
+      })
+      .select()
+      .single()
+
+    if (insertError) throw insertError
+
+    const day = days.value.find((d) => d.id === dayId);
+    if (day) {
+      day.program_exercises.push(data)
+    }
   }
 
   async function updateExercise(exercise) {
@@ -96,6 +118,7 @@ export const useProgramStore = defineStore('program', () => {
     error,
     hasDays,
     saveInitialProgram,
+    addExercise,
     updateExercise,
     deleteExercise,
     fetchDays
