@@ -30,6 +30,10 @@
   --brand:#f0ece8; 
   --brand-glow:rgba(215,255,62,.2); 
   --stripe:rgba(255,255,255,.055);
+
+  --gold: #f5c842;
+  --cyan: #5ce0d8;
+  --green-soft: rgba(110, 231, 160, .14);
 }
 
 [data-theme='light'] {
@@ -54,6 +58,10 @@
   --brand:#14101a; 
   --brand-glow:rgba(20,16,26,.14); 
   --stripe:rgba(20,16,26,.06);
+
+  --gold: #b8860b;
+  --cyan: #2f9b95;
+  --green-soft: rgba(63, 156, 98, .12);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box }

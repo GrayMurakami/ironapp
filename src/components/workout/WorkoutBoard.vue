@@ -165,12 +165,13 @@ function updateSetsCount(exercise, newCount) {
           </div>
         </div>
 
-        <div class="exercise-card__controls">
-          <div class="control-field">
-            <span class="control-field__label">
-              SETS
-            </span>
+        <div class="exercise-card__grid">
+          <span class="exercise-card__label exercise-card__label--sets">
+            sets
+          </span>
+          <div class="exercise-card__box">
             <input
+              class="exercise-card__input"
               :value="exercise.sets"
               type="number"
               inputmode="numeric"
@@ -178,44 +179,46 @@ function updateSetsCount(exercise, newCount) {
             />
           </div>
 
-          <div class="control-field">
-            <span class="control-field__label">
-              REST
-            </span>
+          <span class="exercise-card__label exercise-card__label--rest">
+           rest
+          </span>
+          <div class="exercise-card__box">
             <input
+              class="exercise-card__input"
               v-model.number="exercise.rest_seconds"
               type="number"
               inputmode="numeric"
             />
-            <span class="control-field__unit">
-              sec.
-            </span>
           </div>
-        </div>
+          <span class="exercise-card__unit">
+            sec
+          </span>
+          
+          <div class="exercise-card__divider" />
 
-        <div class="sets">
-          <div
+          <template
             v-for="(set, setIndex) in exercise.sets_data"
             :key="setIndex"
-            class="set-row"
           >
-            <div class="set-field">
-              <span class="set-field__label">
-                KG
-              </span>
+            <span class="exercise-card__label exercise-card__label--weight">
+              kg
+            </span>
+            <div class="exercise-card__box">
               <input
+                class="exercise-card__input"
                 v-model.number="set.weight"
                 type="number"
                 inputmode="decimal"
                 placeholder="-"  
               />
             </div>
-
-            <div class="set-field">
-              <span class="set-field__label">
-                REPS
-              </span>
+            
+            <span class="exercise-card__label exercise-card__label--reps">
+              reps
+            </span>
+            <div class="exercise-card__box">
               <input
+                class="exercise-card__input"
                 v-model.number="set.reps"
                 type="number"
                 inputmode="numeric"
@@ -224,13 +227,13 @@ function updateSetsCount(exercise, newCount) {
             </div>
 
             <button
-              class="set-check"
-              :class="{ done: set.done }"
+              class="exercise-card__check"
+              :class="{ 'exercise-card__check--done': set.done }"
               @click="toggleSetDone(exercise, setIndex)"
             >
               {{ set.done ? '✓' : setIndex + 1 }}
             </button>
-          </div>
+          </template>
         </div>
       </div>
     </div>
@@ -391,136 +394,96 @@ function updateSetsCount(exercise, newCount) {
   color: var(--text);
 }
 
-.exercise-card__controls {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 16px;
-}
-
-.control-field {
-  flex: none;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.control-field__label {
-  font-family: var(--mono);
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: .5px;
-  color: var(--accent);
-  flex: none;
-}
-
-.control-field input {
-  width: 56px;
-  height: 40px;
-  padding: 0 10px;
-  border-radius: 10px;
-  background: var(--bg);
-  border: 1.5px solid var(--border);
-  outline: none;
-  color: var(--text);
-  font-family: 'Anton', sans-serif;
-  font-size: 15px;
-  font-weight: 700;
-  text-align: right;
-  -moz-appearance: textfield;
-}
-
-.control-field__unit {
-  font-size: 15px;
-  color: var(--text-muted);
-  flex: none;
-  margin-left: -4px;
-}
-
-.sets {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.set-row {
+.exercise-card__grid {
   display: grid;
-  grid-template-columns: 1fr 1fr auto;
-  gap: 15px;
+  grid-template-columns: auto 68px auto 68px 40px;
+  gap: 8px 6px;
   align-items: center;
+  justify-content: center;
 }
 
-.set-field {
-  height: 40px;
-  min-width: 0;
+.exercise-card__divider {
+  grid-column: 1 / -1;
+  height: 1px;
+  background: var(--border);
+  margin: 4px 0;
+}
+
+.exercise-card__label {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.exercise-card__label--sets { color: var(--accent) }
+.exercise-card__label--rest { color: var(--green); margin-left: 16px }
+.exercise-card__label--weight { color: var(--gold) }
+.exercise-card__label--reps { color: var(--cyan); margin-left: 16px }
+
+.exercise-card__unit {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  align-self: end;
+  padding-bottom: 3px;
+}
+
+.exercise-card__box {
+  height: 36px;
   display: flex;
   align-items: center;
-  gap: 15px;
-}
-
-.set-field__label {
-  font-family: var(--mono);
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: .5px;
-  flex: none;
-}
-
-.set-field:nth-child(1) .set-field__label {
-  color: var(--accent);
-}
-
-.set-field:nth-child(2) .set-field__label {
-  color: var(--green);
-}
-
-.set-field input {
-  width: 64px;
-  flex: none;
-  min-width: 0;
-  height: 100%;
+  justify-content: flex-end;
   padding: 0 10px;
   border-radius: 10px;
   background: var(--bg);
   border: 1.5px solid var(--border);
+  transition: border-color .2s;
+}
+
+.exercise-card__box:focus-within { border-color: var(--accent) }
+
+.exercise-card__input {
+  width: 100%;
+  min-width: 0;
+  background: none;
+  border: none;
   outline: none;
-  color: var(--text);
+  text-align: right;
   font-family: 'Anton', sans-serif;
   font-size: 15px;
-  font-weight: 700;
-  text-align: right;
+  font-weight: 400;
+  color: var(--text);
   -moz-appearance: textfield;
 }
 
-.set-field input:focus {
-  border-color: var(--accent);
+.exercise-card__input::-webkit-outer-spin-button,
+.exercise-card__input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
-.set-check {
-  flex: none;
+.exercise-card__check {
   width: 40px;
-  height: 40px;
+  height: 36px;
+  margin-left: 10px;
   border-radius: 10px;
   background: var(--bg);
   border: 1.5px solid var(--border);
-  color: var(--text-secondary);
-  font-family: var(--mono);
-  font-size: 15px;
-  font-weight: 700;
+  color: var(--text-muted);
+  font-family: 'Anton', sans-serif;
+  font-size: 16px;
   cursor: pointer;
   transition: all .2s;
 }
 
-.set-check.done {
-  background: var(--green, var(--accent));
-  border-color: var(--green, var(--accent));
-  color: var(--on-accent);
-}
-
-.control-field input::-webkit-outer-spin-button,
-.control-field input::-webkit-inner-spin-button,
-.set-field input::-webkit-outer-spin-button,
-.set-field input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+.exercise-card__check--done {
+  background: var(--green-soft);
+  border-color: var(--green);
+  color: var(--green);
+  font-family: var(--mono);
+  font-size: 15px;
+  font-weight: 700;
 }
 </style>
