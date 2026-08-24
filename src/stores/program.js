@@ -42,6 +42,24 @@ export const useProgramStore = defineStore('program', () => {
     await fetchDays();
   }
 
+  async function addDay() {
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    const { data, error: insertDayError } = await supabase
+      .from('program_days')
+      .insert({
+        name: `Day ${days.value.length + 1}`,
+        order_index: days.value.length,
+        user_id: user.id,
+      })
+      .select()
+      .single()
+
+    if (insertDayError) throw insertDayError;
+
+    days.value.push({ ...data, program_exercises: [] });
+  }
+
   async function addExercise(dayId, name) {
     const { data, error: insertError } = await supabase
       .from('program_exercises')
@@ -78,13 +96,27 @@ export const useProgramStore = defineStore('program', () => {
     if (updateError) throw updateError
   }
 
+  async function deleteDay(dayId) {
+    const { error: deleteDayError } = await supabase
+      .from('program_days')
+      .delete()
+      .eq('id', dayId)
+
+    if (deleteDayError) throw deleteDayError
+
+    const index = days.value.findIndex((d) => d.id === dayId);
+    if (index !== -1) {
+      days.value.splice(index, 1)
+    }
+  }
+
   async function deleteExercise(exerciseId) {
-    const { error: deleteError } = await supabase
+    const { error: deleteExerciseError } = await supabase
       .from('program_exercises')
       .delete()
       .eq('id', exerciseId)
 
-    if (deleteError) throw deleteError
+    if (deleteExerciseError) throw deleteExerciseError
 
     for (const day of days.value) {
       const index = day.program_exercises.findIndex((e) => e.id === exerciseId)
@@ -120,8 +152,10 @@ export const useProgramStore = defineStore('program', () => {
     error,
     hasDays,
     saveInitialProgram,
+    addDay,
     addExercise,
     updateExercise,
+    deleteDay,
     deleteExercise,
     fetchDays
   }
