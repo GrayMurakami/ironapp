@@ -12,6 +12,7 @@ const { appNameDemo } = storeToRefs(auth);
 const { days } = storeToRefs(program);
 
 const activeDayIndex = ref(0);
+const saveTimers = new Map();
 
 const activeDay = computed(() => days.value[activeDayIndex.value]);
 
@@ -66,6 +67,13 @@ function updateSetsCount(exercise, newCount) {
   exercise.sets = count;
 }
 
+function scheduleSave(exercise) {
+  clearTimeout(saveTimers.get(exercise.id));
+  const timer = setTimeout(() => {
+    program.updateExercise(exercise)
+  }, 600);
+  saveTimers.set(exercise.id, timer);
+}
 </script>
 
 <template>
@@ -456,6 +464,7 @@ function updateSetsCount(exercise, newCount) {
   font-weight: 400;
   color: var(--text);
   -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 .exercise-card__input::-webkit-outer-spin-button,
