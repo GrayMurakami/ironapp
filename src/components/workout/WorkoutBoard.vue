@@ -12,6 +12,7 @@ import '@/styles/shared.css'
 const auth = useAuthStore();
 const program = useProgramStore();
 const isEditMode = ref(false);
+const newExerciseName = ref('');
 
 const { appNameDemo } = storeToRefs(auth);
 const { days } = storeToRefs(program);
@@ -53,6 +54,12 @@ const progressPercent = computed(() => {
 
 function toggleEditMode() {
   isEditMode.value = !isEditMode.value;
+}
+
+async function addExercise() {
+  if (!newExerciseName.value.trim()) return
+  await program.addExercise(activeDay.value.id, newExerciseName.value.trim());
+  newExerciseName.value = '';
 }
 
 async function removeExercise(exerciseId) {
@@ -167,6 +174,21 @@ async function removeExercise(exerciseId) {
         :is-edit-mode="isEditMode"
         @remove="removeExercise(exercise.id)"
       />
+    </div>
+
+    <div
+      v-if="activeDay && isEditMode"
+      class="add-exercise"
+    >
+      <input
+        v-model="newExerciseName"
+        type="text"
+        placeholder="Exercise name"
+        @keyup.enter="addExercise"
+      />
+      <button @click="addExercise">
+        + add exercise
+      </button>
     </div>
   </div>
 </template>
@@ -298,5 +320,34 @@ async function removeExercise(exerciseId) {
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.add-exercise {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.add-exercise input {
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 14px;
+}
+
+.add-exercise button {
+  padding: 13px;
+  border-radius: 12px;
+  border: 1.5px dashed var(--border);
+  background: none;
+  color: var(--text-muted);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
 }
 </style>
