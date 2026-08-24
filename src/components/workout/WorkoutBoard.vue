@@ -56,10 +56,23 @@ function toggleEditMode() {
   isEditMode.value = !isEditMode.value;
 }
 
+async function addNewDay() {
+  await program.addDay();
+  activeDayIndex.value = days.value.length - 1
+}
+
 async function addExercise() {
   if (!newExerciseName.value.trim()) return
   await program.addExercise(activeDay.value.id, newExerciseName.value.trim());
   newExerciseName.value = '';
+}
+
+async function removeCurrentDay() {
+  const dayId = activeDay.value.id;
+  await program.deleteDay(dayId);
+  if (activeDayIndex.value >= days.value.length) {
+    activeDayIndex.value = Math.max(0, days.value.length - 1)
+  }
 }
 
 async function removeExercise(exerciseId) {
@@ -109,7 +122,23 @@ async function removeExercise(exerciseId) {
       >
         {{ day.name }}
       </button>
+
+      <button
+        v-if="isEditMode"
+        class="day-tab day-tab--add"
+        @click="addNewDay"
+      >
+        + Day
+      </button>
     </div>
+
+    <button
+      v-if="isEditMode && activeDay"
+      class="remove-day-btn"
+      @click="removeCurrentDay"
+    >
+      Remove {{ activeDay.name }}
+    </button>
 
     <div
       v-if="activeDay"
@@ -239,6 +268,56 @@ async function removeExercise(exerciseId) {
   width: 18px;
   height: 18px;
   object-fit: contain;
+}
+
+.icon-btn.active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.day-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  margin-bottom: 8px;
+}
+
+.day-tab {
+  flex: none;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  color: var(--text-secondary);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.day-tab.active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.day-tab--add {
+  border-style: dashed;
+  color: var(--text-muted);
+}
+
+.remove-day-btn {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 16px;
+  border-radius: 10px;
+  background: none;
+  border: 1.5px dashed var(--error-red);
+  color: var(--error-red);
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
 }
 
 .day-progress {
