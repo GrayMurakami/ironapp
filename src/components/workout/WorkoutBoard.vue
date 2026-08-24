@@ -4,6 +4,9 @@ import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/auth'
 import { useProgramStore } from '@/stores/program'
 import ExerciseCard from './ExerciseCard.vue'
+import iconJournal from '@/assets/icons/journal.png'
+import iconEdit from '@/assets/icons/edit.png'
+import iconLogout from '@/assets/icons/logout.png'
 import '@/styles/shared.css'
 
 const auth = useAuthStore();
@@ -54,12 +57,28 @@ const progressPercent = computed(() => {
       <h1 class="board__brand">
         {{ appNameDemo }}
       </h1>
-      <button
-        class="board__logout"
-        @click="auth.signOut()"
-      >
-        Exit
-      </button>
+
+      <div class="board__actions">
+        <button
+          class="icon-btn"
+          aria-label="Journal"
+        >
+          <img :src="iconJournal" alt="" />
+        </button>
+        <button
+          class="icon-btn"
+          aria-label="Edit"
+        >
+          <img :src="iconEdit" alt="" />
+        </button>
+        <button
+          class="icon-btn"
+          aria-label="Log out"
+          @click="auth.signOut()"
+        >
+          <img :src="iconLogout" alt="" />
+        </button>
+      </div>
     </header>
 
     <div class="day-tabs">
@@ -163,16 +182,28 @@ const progressPercent = computed(() => {
   text-shadow: 0 0 30px var(--accent-glow);
 }
 
-.board__logout {
-  padding: 8px 14px;
+.board__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.icon-btn {
+  width: 38px;
+  height: 38px;
   border-radius: 10px;
   background: var(--bg-card);
   border: 1.5px solid var(--border);
-  color: var(--text-secondary);
-  font-family: var(--font);
-  font-size: 12px;
-  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  padding: 0;
+}
+
+.icon-btn img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
 }
 
 .day-progress {
