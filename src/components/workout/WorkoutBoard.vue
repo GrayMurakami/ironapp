@@ -123,7 +123,7 @@ function updateSetsCount(exercise, newCount) {
           {{ doneSets }} of {{ totalSets }} sets
         </span>
         <span class="progress-info__percent">
-          {{ progressPercent }}%
+          {{ progressPercent }} %
         </span>
       </div>
 
@@ -211,10 +211,16 @@ function updateSetsCount(exercise, newCount) {
             v-for="(set, setIndex) in exercise.sets_data"
             :key="setIndex"
           >
-            <span class="exercise-card__label exercise-card__label--weight">
+            <span 
+              class="exercise-card__label exercise-card__label--weight"
+              :class="{ 'is-done': set.done }"
+            >
               kg
             </span>
-            <div class="exercise-card__box">
+            <div 
+              class="exercise-card__box"
+              :class="{ 'is-done': set.done }"
+            >
               <input
                 class="exercise-card__input"
                 v-model.number="set.weight"
@@ -225,10 +231,16 @@ function updateSetsCount(exercise, newCount) {
               />
             </div>
             
-            <span class="exercise-card__label exercise-card__label--reps">
+            <span
+              class="exercise-card__label exercise-card__label--reps"
+              :class="{ 'is-done': set.done }"
+            >
               reps
             </span>
-            <div class="exercise-card__box">
+            <div 
+              class="exercise-card__box"
+              :class="{ 'is-done': set.done }"
+            >
               <input
                 class="exercise-card__input"
                 v-model.number="set.reps"
@@ -268,7 +280,7 @@ function updateSetsCount(exercise, newCount) {
 }
 
 .board__brand {
-  font-family: 'Anton', sans-serif;
+  font-family: var(--display);
   font-size: 32px;
   font-weight: 400;
   letter-spacing: .5px;
@@ -294,12 +306,13 @@ function updateSetsCount(exercise, newCount) {
   border-radius: 2px;
   background: var(--border);
   overflow: hidden;
+  margin-top: 26px;
   margin-bottom: 16px;
 }
 
 .day-progress__fill {
   height: 100%;
-  background: var(--accent);
+  background: var(--green);
   transition: width .3s ease;
 }
 
@@ -316,14 +329,17 @@ function updateSetsCount(exercise, newCount) {
 
 .progress-info__label {
   font-size: 13px;
+  font-family: var(--display);
+  letter-spacing: 1px;
   color: var(--text-secondary);
 }
 
 .progress-info__percent {
-  font-family: 'Anton', sans-serif;
+  font-family: var(--display);
   font-size: 18px;
   font-weight: 700;
-  color: var(--accent);
+  letter-spacing: 1px;
+  color: var(--green);
 }
 
 .stat-cards {
@@ -336,7 +352,7 @@ function updateSetsCount(exercise, newCount) {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 14px 8px;
+  padding: 10px 8px;
   border-radius: 12px;
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -344,9 +360,10 @@ function updateSetsCount(exercise, newCount) {
 }
 
 .stat-card__value {
-  font-family: 'Anton', sans-serif;
+  font-family: var(--display);
   font-size: 25px;
   font-weight: 700;
+  letter-spacing: 1px;
   color: var(--text);
 }
 
@@ -356,7 +373,7 @@ function updateSetsCount(exercise, newCount) {
   letter-spacing: .5px;
   text-transform: uppercase;
   color: var(--text-muted);
-  margin-top: 2px;
+  margin-top: 7px;
 }
 
 .exercises {
@@ -370,28 +387,28 @@ function updateSetsCount(exercise, newCount) {
   background: var(--bg-card);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-card);
-  padding: 16px;
+  padding: 13px 18px 16px 13px;
 }
 
 .exercise-card__head {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 14px;
+  margin-bottom: 17px;
 }
 
 .exercise-card__num {
   flex: none;
-  width: 32px;
-  height: 32px;
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
-  border: 1.5px solid var(--error-red);
+  border: 2px solid var(--error-red);
   color: var(--error-red);
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: 18px;
   font-weight: 700;
 }
 
@@ -402,7 +419,7 @@ function updateSetsCount(exercise, newCount) {
 }
 
 .exercise-card__name {
-  font-size: 15px;
+  font-size: 20px;
   font-weight: 800;
   color: var(--text);
 }
@@ -410,7 +427,7 @@ function updateSetsCount(exercise, newCount) {
 .exercise-card__grid {
   display: grid;
   grid-template-columns: auto 68px auto 68px 40px;
-  gap: 8px 6px;
+  gap: 8px 8px;
   align-items: center;
   justify-content: center;
 }
@@ -424,16 +441,30 @@ function updateSetsCount(exercise, newCount) {
 
 .exercise-card__label {
   font-family: var(--mono);
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
+  text-align: right;
 }
 
-.exercise-card__label--sets { color: var(--accent) }
-.exercise-card__label--rest { color: var(--green); margin-left: 16px }
-.exercise-card__label--weight { color: var(--gold) }
-.exercise-card__label--reps { color: var(--cyan); margin-left: 16px }
+.exercise-card__label--sets { 
+  color: var(--accent);
+}
+
+.exercise-card__label--rest { 
+  color: var(--green);
+  margin-left: 25px;
+}
+
+.exercise-card__label--weight { 
+  color: var(--gold);
+}
+
+.exercise-card__label--reps {
+  color: var(--cyan);
+  margin-left: 25px;
+}
 
 .exercise-card__unit {
   font-family: var(--mono);
@@ -455,7 +486,9 @@ function updateSetsCount(exercise, newCount) {
   transition: border-color .2s;
 }
 
-.exercise-card__box:focus-within { border-color: var(--accent) }
+.exercise-card__box:focus-within { 
+  border-color: var(--accent)
+}
 
 .exercise-card__input {
   width: 100%;
@@ -463,10 +496,11 @@ function updateSetsCount(exercise, newCount) {
   background: none;
   border: none;
   outline: none;
-  text-align: right;
-  font-family: 'Anton', sans-serif;
-  font-size: 15px;
+  text-align: center;
+  font-family: var(--display);
+  font-size: 17px;
   font-weight: 400;
+  letter-spacing: 1px;
   color: var(--text);
   -moz-appearance: textfield;
   appearance: textfield;
@@ -482,12 +516,12 @@ function updateSetsCount(exercise, newCount) {
   width: 40px;
   height: 36px;
   margin-left: 10px;
-  border-radius: 10px;
+  border-radius: 8px;
   background: var(--bg);
-  border: 1.5px solid var(--border);
+  border: 2px solid var(--border);
   color: var(--text-muted);
-  font-family: 'Anton', sans-serif;
-  font-size: 16px;
+  font-family: var(--display);
+  font-size: 20px;
   cursor: pointer;
   transition: all .2s;
 }
@@ -499,5 +533,10 @@ function updateSetsCount(exercise, newCount) {
   font-family: var(--mono);
   font-size: 15px;
   font-weight: 700;
+}
+
+.exercise-card__label.is-done,
+.exercise-card__box.is-done {
+  opacity: .4;
 }
 </style>
