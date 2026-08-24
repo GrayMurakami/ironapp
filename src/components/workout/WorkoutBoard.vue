@@ -47,8 +47,17 @@ const progressPercent = computed(() => {
   return Math.round((doneSets.value / totalSets.value) * 100)
 });
 
+function scheduleSave(exercise) {
+  clearTimeout(saveTimers.get(exercise.id));
+  const timer = setTimeout(() => {
+    program.updateExercise(exercise)
+  }, 600);
+  saveTimers.set(exercise.id, timer);
+}
+
 function toggleSetDone(exercise, setIndex) {
   exercise.sets_data[setIndex].done = !exercise.sets_data[setIndex].done;
+  scheduleSave(exercise);
 }
 
 function updateSetsCount(exercise, newCount) {
@@ -65,14 +74,7 @@ function updateSetsCount(exercise, newCount) {
   }
 
   exercise.sets = count;
-}
-
-function scheduleSave(exercise) {
-  clearTimeout(saveTimers.get(exercise.id));
-  const timer = setTimeout(() => {
-    program.updateExercise(exercise)
-  }, 600);
-  saveTimers.set(exercise.id, timer);
+  scheduleSave(exercise);
 }
 </script>
 
@@ -196,6 +198,7 @@ function scheduleSave(exercise) {
               v-model.number="exercise.rest_seconds"
               type="number"
               inputmode="numeric"
+              @input="scheduleSave(exercise)"
             />
           </div>
           <span class="exercise-card__unit">
@@ -217,7 +220,8 @@ function scheduleSave(exercise) {
                 v-model.number="set.weight"
                 type="number"
                 inputmode="decimal"
-                placeholder="-"  
+                placeholder="—"
+                @input="scheduleSave(exercise)"
               />
             </div>
             
@@ -230,7 +234,8 @@ function scheduleSave(exercise) {
                 v-model.number="set.reps"
                 type="number"
                 inputmode="numeric"
-                placeholder="-"  
+                placeholder="—"
+                @input="scheduleSave(exercise)"
               />
             </div>
 
