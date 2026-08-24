@@ -25,6 +25,10 @@ function toggleSetDone(setIndex) {
   scheduleSave();
 }
 
+function updateName() {
+  scheduleSave();
+}
+
 function updateSetsCount(newCount) {
   const count = Math.max(1, Math.min(10, newCount || 1));
   const current = props.exercise.sets_data.length
@@ -50,9 +54,19 @@ function updateSetsCount(newCount) {
         {{ String(index + 1).padStart(2, '0') }}
       </span>
       <div class="exercise-card__title">
-        <span class="exercise-card__name">
+        <span
+          v-if="!isEditMode" 
+          class="exercise-card__name"
+        >
           {{ exercise.name }}
         </span>
+        <input
+          v-else
+          v-model="exercise.name"
+          class="exercise-card__name-input"
+          type="text"
+          @input="updateName"
+        />
       </div>
       <button
         v-if="isEditMode"
@@ -191,6 +205,23 @@ function updateSetsCount(newCount) {
   font-size: 20px;
   font-weight: 800;
   color: var(--text);
+}
+
+.exercise-card__name-input {
+  width: 100%;
+  padding: 6px 0;
+  background: none;
+  border: none;
+  border-bottom: 1.5px solid var(--border);
+  outline: none;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.exercise-card__name-input:focus {
+  border-bottom-color: var(--accent);
 }
 
 .exercise-card__remove {

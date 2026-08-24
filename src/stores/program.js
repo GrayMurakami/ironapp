@@ -68,6 +68,7 @@ export const useProgramStore = defineStore('program', () => {
     const { error: updateError } = await supabase
       .from('program_exercises')
       .update({
+        name: exercise.name,
         sets: exercise.sets,
         rest_seconds: exercise.rest_seconds,
         sets_data: exercise.sets_data,
@@ -102,6 +103,7 @@ export const useProgramStore = defineStore('program', () => {
         .from('program_days')
         .select('*, program_exercises(*)')
         .order('order_index', { ascending: true })
+        .order('order_index', { ascending: true, foreighTable: 'program_exercises' })
 
       if (fetchError) throw fetchError
       days.value = data;
