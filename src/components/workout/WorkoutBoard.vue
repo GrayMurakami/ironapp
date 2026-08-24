@@ -307,7 +307,7 @@ function updateSetsCount(exercise, newCount) {
 }
 
 .progress-info__percent {
-  font-family: var(--mono);
+  font-family: 'Anton', sans-serif;
   font-size: 18px;
   font-weight: 700;
   color: var(--accent);
@@ -331,8 +331,8 @@ function updateSetsCount(exercise, newCount) {
 }
 
 .stat-card__value {
-  font-family: var(--mono);
-  font-size: 22px;
+  font-family: 'Anton', sans-serif;
+  font-size: 25px;
   font-weight: 700;
   color: var(--text);
 }
@@ -411,7 +411,7 @@ function updateSetsCount(exercise, newCount) {
 
 .exercise-card__label {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 15px;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
