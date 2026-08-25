@@ -165,23 +165,26 @@ function getNextExercise(block) {
       >
         {{ day.name }}
       </button>
-
-      <button
-        v-if="isEditMode"
-        class="day-tab day-tab--add"
-        @click="addNewDay"
-      >
-        + Day
-      </button>
     </div>
 
-    <button
-      v-if="isEditMode && activeDay"
-      class="remove-day-btn"
-      @click="removeCurrentDay"
+    <div
+      v-if="isEditMode"
+      class="day-actions"
     >
-      Remove {{ activeDay.name }}
-    </button>
+      <button
+        class="day-actions__add"
+        @click="addNewDay"
+      >
+        + Add day
+      </button>
+      <button
+        v-if="isEditMode && activeDay"
+        class="day-actions__remove"
+        @click="removeCurrentDay"
+      >
+        ✕ Remove {{ activeDay.name }}
+      </button>
+    </div>
 
     <div
       v-if="activeDay"
@@ -247,7 +250,7 @@ function getNextExercise(block) {
           class="superset"
         >
           <div class="superset__tag">
-            Superset · 2 moves · rest optional
+            Superset · rest between sets optional
           </div>
           <ExerciseCard
             v-for="(exercise, i) in block.exercises"
@@ -369,23 +372,39 @@ function getNextExercise(block) {
   color: var(--accent);
 }
 
-.day-tab--add {
-  border-style: dashed;
-  color: var(--text-muted);
+.day-actions {
+  display: flex;
+  gap: 15px;
+  margin: 16px 0;
 }
 
-.remove-day-btn {
-  width: 100%;
-  padding: 10px;
-  margin-top: 3px;
-  margin-bottom: 5px;
-  border-radius: 10px;
+.day-actions__add {
+  flex: 1;
+  padding: 13px;
+  border-radius: 14px;
+  border: 1.5px dashed var(--border);
   background: none;
+  color: var(--text-muted);
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.day-actions__remove {
+  flex: 1;
+  padding: 13px;
+  border-radius: 14px;
   border: 1.5px dashed var(--error-red);
+  background: var(--bg-card);
   color: var(--error-red);
   font-family: var(--font);
   font-size: 12px;
   font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
   cursor: pointer;
 }
 
