@@ -60,6 +60,20 @@ export const useProgramStore = defineStore('program', () => {
     days.value.push({ ...data, program_exercises: [] });
   }
 
+  async function deleteDay(dayId) {
+    const { error: deleteDayError } = await supabase
+      .from('program_days')
+      .delete()
+      .eq('id', dayId)
+
+    if (deleteDayError) throw deleteDayError
+
+    const index = days.value.findIndex((d) => d.id === dayId);
+    if (index !== -1) {
+      days.value.splice(index, 1)
+    }
+  }
+
   async function addExercise(dayId, name) {
     const { data, error: insertError } = await supabase
       .from('program_exercises')
@@ -94,20 +108,6 @@ export const useProgramStore = defineStore('program', () => {
       .eq('id', exercise.id)
 
     if (updateError) throw updateError
-  }
-
-  async function deleteDay(dayId) {
-    const { error: deleteDayError } = await supabase
-      .from('program_days')
-      .delete()
-      .eq('id', dayId)
-
-    if (deleteDayError) throw deleteDayError
-
-    const index = days.value.findIndex((d) => d.id === dayId);
-    if (index !== -1) {
-      days.value.splice(index, 1)
-    }
   }
 
   async function deleteExercise(exerciseId) {
@@ -183,9 +183,9 @@ export const useProgramStore = defineStore('program', () => {
     hasDays,
     saveInitialProgram,
     addDay,
+    deleteDay,
     addExercise,
     updateExercise,
-    deleteDay,
     deleteExercise,
     linkExercises,
     unlinkExercise,

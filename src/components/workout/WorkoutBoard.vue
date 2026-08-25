@@ -13,11 +13,10 @@ const auth = useAuthStore();
 const program = useProgramStore();
 const isEditMode = ref(false);
 const newExerciseName = ref('');
+const activeDayIndex = ref(0);
 
 const { appNameDemo } = storeToRefs(auth);
 const { days } = storeToRefs(program);
-
-const activeDayIndex = ref(0);
 
 const activeDay = computed(() => days.value[activeDayIndex.value]);
 
@@ -52,6 +51,35 @@ const progressPercent = computed(() => {
   return Math.round((doneSets.value / totalSets.value) * 100)
 });
 
+const displayBlocks = computed(() => {
+  if (!activeDay.value) return []
+
+  const exercises = activeDay.value.program_exercises;
+  const blocks = [];
+  const seen = new Set();
+
+  for (const exercise of exercises) {
+    if (seen.has(exercise.id)) continue
+
+    if (exercise.superset_group) {
+      const partner = exercises.find(
+        (e) => e.id !== exercise.id && e.superset_group === exercise.superset_group
+      )
+      if (partner) {
+        blocks.push({ type: 'superset', exercises: [exercise, partner] })
+        seen.add(exercise.id)
+        seen.add(partner.id)
+        continue
+      }
+    }
+
+    blocks.push({ type: 'single', exercises: [exercise] })
+    seen.add(exercise.id)
+  }
+
+  return blocks
+});
+
 function toggleEditMode() {
   isEditMode.value = !isEditMode.value;
 }
@@ -59,12 +87,6 @@ function toggleEditMode() {
 async function addNewDay() {
   await program.addDay();
   activeDayIndex.value = days.value.length - 1
-}
-
-async function addExercise() {
-  if (!newExerciseName.value.trim()) return
-  await program.addExercise(activeDay.value.id, newExerciseName.value.trim());
-  newExerciseName.value = '';
 }
 
 async function removeCurrentDay() {
@@ -75,8 +97,29 @@ async function removeCurrentDay() {
   }
 }
 
+async function addExercise() {
+  if (!newExerciseName.value.trim()) return
+  await program.addExercise(activeDay.value.id, newExerciseName.value.trim());
+  newExerciseName.value = '';
+}
+
 async function removeExercise(exerciseId) {
   await program.deleteExercise(exerciseId);
+}
+
+function linkExercises(exerciseA, exerciseB) {
+  program.linkExercises(exerciseA, exerciseB);
+}
+
+function unlinkExercise(exercise) {
+  program.unlinkExercise(exercise);
+}
+
+function getNextExercise(block) {
+  const blocks = displayBlocks.value;
+  const currentIndex = blocks.indexOf(block);
+  const next = blocks[currentIndex + 1];
+  return next && next.type === 'single' ? next.exercises[0] : null
 }
 </script>
 
@@ -195,14 +238,39 @@ async function removeExercise(exerciseId) {
       v-if="activeDay"
       class="exercises"
     >
-      <ExerciseCard
-        v-for="(exercise, exIndex) in activeDay.program_exercises"
-        :key="exercise.id"
-        :exercise="exercise"
-        :index="exIndex"
-        :is-edit-mode="isEditMode"
-        @remove="removeExercise(exercise.id)"
-      />
+      <template
+        v-for="block in displayBlocks"
+        :key="block.exercises[0].id"
+      >
+        <div
+          v-if="block.type === 'superset'"
+          class="superset"
+        >
+          <div class="superset__tag">
+            Superset · 2 moves · rest optional
+          </div>
+          <ExerciseCard
+            v-for="(exercise, i) in block.exercises"
+            :key="exercise.id"
+            :exercise="exercise"
+            :index="activeDay.program_exercises.indexOf(exercise)"
+            :is-edit-mode="isEditMode"
+            :is-superset-first="i === 0"
+            @remove="removeExercise(exercise.id)"
+            @unlink="unlinkExercise(exercise)"
+          />
+        </div>
+
+        <ExerciseCard
+          v-else
+          :exercise="block.exercises[0]"
+          :index="activeDay.program_exercises.indexOf(block.exercises[0])"
+          :is-edit-mode="isEditMode"
+          :next-exercise="getNextExercise(block)"
+          @remove="removeExercise(block.exercises[0].id)"
+          @link="linkExercises(block.exercises[0], $event)"
+        />
+      </template>
     </div>
 
     <div
@@ -400,6 +468,26 @@ async function removeExercise(exerciseId) {
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.superset {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  border-radius: 18px;
+  border: 1.5px dashed var(--accent);
+  background: var(--accent-soft);
+}
+
+.superset__tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding: 0 4px;
 }
 
 .add-exercise {

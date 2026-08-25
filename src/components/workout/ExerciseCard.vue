@@ -6,9 +6,11 @@ const props = defineProps({
   exercise: { type: Object, required: true },
   index: { type: Number, required: true },
   isEditMode: { type: Boolean, default: false },
+  isSupersetFirst: { type: Boolean, default: false },
+  nextExercise: { type: Object, default: null },
 });
 
-const emit = defineEmits(['remove']);
+const emit = defineEmits(['remove', 'link', 'unlink']);
 
 const program = useProgramStore();
 let saveTimer = null;
@@ -68,6 +70,23 @@ function updateSetsCount(newCount) {
           @input="updateName"
         />
       </div>
+
+      <button
+        v-if="isEditMode && nextExercise"
+        class="exercise-card__link"
+        @click="emit('link', nextExercise)"
+      >
+        Link up
+      </button>
+
+      <button
+        v-if="isEditMode && isSupersetFirst"
+        class="exercise-card__link exercise-card__link--active"
+        @click="emit('unlink')"
+      >
+        Unlink
+      </button>
+
       <button
         v-if="isEditMode"
         class="exercise-card__remove"
@@ -222,6 +241,28 @@ function updateSetsCount(newCount) {
 
 .exercise-card__name-input:focus {
   border-bottom-color: var(--accent);
+}
+
+.exercise-card__link {
+  flex: none;
+  margin-left: auto;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  color: var(--text-muted);
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.exercise-card__link--active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .exercise-card__remove {
