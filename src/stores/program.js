@@ -55,7 +55,7 @@ export const useProgramStore = defineStore('program', () => {
       .select()
       .single()
 
-    if (insertDayError) throw insertDayError;
+    if (insertDayError) throw insertDayError
 
     days.value.push({ ...data, program_exercises: [] });
   }
@@ -127,6 +127,36 @@ export const useProgramStore = defineStore('program', () => {
     }
   }
 
+  async function linkExercises(exerciseA, exerciseB) {
+    const groupId = crypto.randomUUID();
+
+    const { error: linkError } = await supabase
+      .from('program_exercises')
+      .update({ superset_group: groupId })
+      .in('id', [exerciseA.id, exerciseB.id])
+
+    if (linkError) throw linkError
+
+    exerciseA.superset_group = groupId;
+    exerciseB.superset_group = groupId;
+  }
+
+  async function unlinkExercise(exercise) {
+    const { error: unlinkError } = await supabase
+      .from('program_exercises')
+      .update({ superset_group: null })
+      .eq('superset_group', exercise.superset_group)
+
+    if (unlinkError) throw unlinkError
+
+    const day = days.value.find((d) => d.program_exercises.some((e) => e.id === exercise.id));
+    if (day) {
+      day.program_exercises.forEach((e) => {
+        if (e.superset_group === exercise.superset_group) e.superset_group = null
+      });
+    }
+  }
+
   async function fetchDays() {
     error.value = null;
 
@@ -157,6 +187,8 @@ export const useProgramStore = defineStore('program', () => {
     updateExercise,
     deleteDay,
     deleteExercise,
+    linkExercises,
+    unlinkExercise,
     fetchDays
   }
 });
