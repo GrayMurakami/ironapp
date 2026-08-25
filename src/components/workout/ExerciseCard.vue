@@ -50,7 +50,10 @@ function updateSetsCount(newCount) {
 </script>
 
 <template>
-  <div class="exercise-card">
+  <div
+    class="exercise-card"
+    :class="{ 'exercise-card__edit': isEditMode }"
+  >
     <div class="exercise-card__head">
       <span class="exercise-card__num">
         {{ String(index + 1).padStart(2, '0') }}
@@ -170,7 +173,7 @@ function updateSetsCount(newCount) {
       class="exercise-card__link-btn"
       @click="emit('link', nextExercise)"
     >
-      🔗 Link up
+      🔗 Link Up
     </button>
 
     <button
@@ -187,7 +190,7 @@ function updateSetsCount(newCount) {
       @click="emit('remove')"
       aria-label="Remove exercise"
     >
-      delete
+      🗑 delete
     </button>
   </div>
 </template>
@@ -199,7 +202,11 @@ function updateSetsCount(newCount) {
   background: var(--bg-card);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-card);
-  padding: 13px 13px 50px;
+  padding: 13px 13px 17px;
+}
+
+.exercise-card__edit {
+  padding-bottom: 50px;
 }
 
 .exercise-card__head {
@@ -256,8 +263,8 @@ function updateSetsCount(newCount) {
 
 .exercise-card__grid {
   display: grid;
-  grid-template-columns: auto 68px auto 68px 40px;
-  gap: 8px 8px;
+  grid-template-columns: auto minmax(0, 68px) auto minmax(0, 68px) 40px;
+  gap: 8px;
   align-items: center;
   justify-content: center;
 }
@@ -284,7 +291,7 @@ function updateSetsCount(newCount) {
 
 .exercise-card__label--rest { 
   color: var(--green);
-  margin-left: 25px;
+  margin-left: 14px;
 }
 
 .exercise-card__label--weight { 
@@ -345,7 +352,7 @@ function updateSetsCount(newCount) {
 .exercise-card__check {
   width: 40px;
   height: 36px;
-  margin-left: 10px;
+  margin-left: 7px;
   border-radius: 8px;
   background: var(--bg);
   border: 2px solid var(--border);
