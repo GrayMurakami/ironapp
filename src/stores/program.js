@@ -137,7 +137,15 @@ export const useProgramStore = defineStore('program', () => {
 
     if (linkError) throw linkError
 
+    const { error: resetRestFieldError } = await supabase
+      .from('program_exercises')
+      .update({ rest_seconds: 0 })
+      .eq('id', exerciseA.id)
+
+    if (resetRestFieldError) throw resetRestFieldError
+
     exerciseA.superset_group = groupId;
+    exerciseA.rest_seconds = 0;
     exerciseB.superset_group = groupId;
   }
 

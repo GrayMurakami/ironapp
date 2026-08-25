@@ -71,28 +71,6 @@ function updateSetsCount(newCount) {
         />
       </div>
 
-      <button
-        v-if="isEditMode && nextExercise"
-        class="exercise-card__link"
-        @click="emit('link', nextExercise)"
-      >
-        Link up
-      </button>
-
-      <button
-        v-if="isEditMode && isSupersetFirst"
-        class="exercise-card__link exercise-card__link--active"
-        @click="emit('unlink')"
-      >
-        Unlink
-      </button>
-
-      <button
-        v-if="isEditMode"
-        class="exercise-card__remove"
-        @click="emit('remove')"
-        aria-label="Remove exercise"
-      />
     </div>
 
     <div class="exercise-card__grid">
@@ -109,10 +87,16 @@ function updateSetsCount(newCount) {
         />
       </div>
 
-      <span class="exercise-card__label exercise-card__label--rest">
+      <span 
+        class="exercise-card__label exercise-card__label--rest"
+        :class="{ 'is-done': isSupersetFirst }"      
+      >
         rest
       </span>
-      <div class="exercise-card__box">
+      <div 
+        class="exercise-card__box"
+        :class="{ 'is-done': isSupersetFirst }"  
+      >
         <input
           class="exercise-card__input"
           v-model.number="exercise.rest_seconds"
@@ -180,22 +164,48 @@ function updateSetsCount(newCount) {
         </button>
       </template>
     </div>
+
+    <button
+      v-if="isEditMode && nextExercise"
+      class="exercise-card__link-btn"
+      @click="emit('link', nextExercise)"
+    >
+      🔗 Link up
+    </button>
+
+    <button
+      v-if="isEditMode && isSupersetFirst"
+      class="exercise-card__link-btn exercise-card__link-btn--active"
+      @click="emit('unlink')"
+    >
+      🔗 Unlink
+    </button>
+
+    <button
+      v-if="isEditMode"
+      class="exercise-card__remove"
+      @click="emit('remove')"
+      aria-label="Remove exercise"
+    >
+      delete
+    </button>
   </div>
 </template>
 
 <style scoped>
 .exercise-card {
+  position: relative;
   border-radius: 16px;
   background: var(--bg-card);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-card);
-  padding: 13px 18px 16px 13px;
+  padding: 13px 13px 50px;
 }
 
 .exercise-card__head {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   margin-bottom: 17px;
 }
 
@@ -243,67 +253,6 @@ function updateSetsCount(newCount) {
   border-bottom-color: var(--accent);
 }
 
-.exercise-card__link {
-  flex: none;
-  margin-left: auto;
-  padding: 6px 10px;
-  border-radius: 8px;
-  background: var(--bg);
-  border: 1.5px solid var(--border);
-  color: var(--text-muted);
-  font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: .5px;
-  text-transform: uppercase;
-  cursor: pointer;
-}
-
-.exercise-card__link--active {
-  background: var(--accent-soft);
-  border-color: var(--accent);
-  color: var(--accent);
-}
-
-.exercise-card__remove {
-  position: relative;
-  margin: -4px -7px auto auto;
-  width: 26px;
-  height: 26px;
-  border-radius: 8px;
-  background: var(--bg);
-  border: 1.5px solid var(--border);
-  cursor: pointer;
-  flex: none;
-  transition: border-color .2s;
-}
-
-.exercise-card__remove::before,
-.exercise-card__remove::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 13px;
-  height: 2px;
-  border-radius: 1px;
-  background: var(--text-muted);
-  transform-origin: center;
-  transition: background .2s;
-}
-
-.exercise-card__remove::before {
-  transform: translate(-50%, -50%) rotate(45deg);
-}
-
-.exercise-card__remove::after {
-  transform: translate(-50%, -50%) rotate(-45deg);
-}
-
-.exercise-card__remove:hover::before,
-.exercise-card__remove:hover::after {
-  background: var(--error-red);
-}
 
 .exercise-card__grid {
   display: grid;
@@ -419,5 +368,44 @@ function updateSetsCount(newCount) {
 .exercise-card__label.is-done,
 .exercise-card__box.is-done {
   opacity: .4;
+}
+
+.exercise-card__link-btn,
+.exercise-card__remove {
+  position: absolute;
+  bottom: 0;
+  padding: 9px 16px;
+  background: none;
+  border: 1.5px dashed var(--border);
+  border-bottom: none;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.exercise-card__link-btn {
+  left: 0;
+  border-left: none;
+  border-radius: 0 12px 0 15px;
+  color: var(--text-muted);
+}
+
+.exercise-card__link-btn--active {
+  border: 1.5px solid var(--accent);
+  border-left: none;
+  border-bottom: none;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.exercise-card__remove {
+  right: 0;
+  border-right: none;
+  border-radius: 12px 0 15px 0;
+  border-color: rgba(239, 68, 68, .4);
+  color: var(--error-red);
 }
 </style>

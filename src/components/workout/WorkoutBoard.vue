@@ -385,7 +385,7 @@ function getNextExercise(block) {
   border: 1.5px dashed var(--border);
   background: none;
   color: var(--text-muted);
-  font-family: var(--font);
+  font-family: var(--mono);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 1px;
@@ -400,7 +400,7 @@ function getNextExercise(block) {
   border: 1.5px dashed var(--error-red);
   background: var(--bg-card);
   color: var(--error-red);
-  font-family: var(--font);
+  font-family: var(--mono);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 1px;
@@ -436,8 +436,8 @@ function getNextExercise(block) {
 
 .progress-info__label {
   font-size: 13px;
-  font-family: var(--display);
-  letter-spacing: 1px;
+  font-family: var(--mono);
+  letter-spacing: 0.5px;
   color: var(--text-secondary);
 }
 
