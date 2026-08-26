@@ -42,6 +42,15 @@ export const useProgramStore = defineStore('program', () => {
     await fetchDays();
   }
 
+  async function updateDayName(dayId, name) {
+    const { error: renameDayError } = await supabase
+      .from('program_days')
+      .update({ name })
+      .eq('id', dayId)
+
+    if (renameDayError) throw renameDayError
+  }
+
   async function addDay() {
     const { data: { user } } = await supabase.auth.getUser();
     
@@ -190,6 +199,7 @@ export const useProgramStore = defineStore('program', () => {
     error,
     hasDays,
     saveInitialProgram,
+    updateDayName,
     addDay,
     deleteDay,
     addExercise,

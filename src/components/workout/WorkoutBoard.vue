@@ -15,6 +15,8 @@ const isEditMode = ref(false);
 const newExerciseName = ref('');
 const activeDayIndex = ref(0);
 
+let renameTimer = null;
+
 const { appNameDemo } = storeToRefs(auth);
 const { days } = storeToRefs(program);
 
@@ -82,6 +84,13 @@ const displayBlocks = computed(() => {
 
 function toggleEditMode() {
   isEditMode.value = !isEditMode.value;
+}
+
+function renameDay(day) {
+  clearTimeout(renameTimer);
+  renameTimer = setTimeout(() => {
+    program.updateDayName(day.id, day.name)
+  }, 600);
 }
 
 async function addNewDay() {
@@ -156,15 +165,28 @@ function getNextExercise(block) {
     </header>
 
     <div class="day-tabs">
-      <button
-        v-for="(day, index) in days"
-        :key="day.id"
-        class="day-tab"
-        :class="{ active: activeDayIndex === index }"
-        @click="activeDayIndex = index"
+      <template
+       v-for="(day, index) in days"
+       :key="day.id"
       >
+        <input
+          v-if="isEditMode && activeDayIndex === index"
+          v-model="day.name"
+          class="day-tab day-tab__editing"
+          type="text"
+          maxlength="15"
+          @input="renameDay(day)"
+        />
+        <button
+          v-else
+          class="day-tab"
+          :class="{ active: activeDayIndex === index }"
+          @click="activeDayIndex = index"
+        >
         {{ day.name }}
       </button>
+      </template>
+      
     </div>
 
     <div
@@ -182,7 +204,10 @@ function getNextExercise(block) {
         class="day-actions__remove"
         @click="removeCurrentDay"
       >
-        ✕ Remove {{ activeDay.name }}
+        ✕ Remove
+          <span class="day-actions__remove-name">
+            {{ activeDay.name }}
+          </span>
       </button>
     </div>
 
@@ -404,8 +429,20 @@ function getNextExercise(block) {
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 1px;
+  white-space: normal;
+  line-height: 1.3;
   text-transform: uppercase;
   cursor: pointer;
+}
+
+.day-actions__remove-name {
+  display: -webkit-box;
+  font-size: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .day-progress {

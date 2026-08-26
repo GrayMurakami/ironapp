@@ -70,6 +70,7 @@ function updateSetsCount(newCount) {
           v-model="exercise.name"
           class="exercise-card__name-input"
           type="text"
+          maxlength="40"
           @input="updateName"
         />
       </div>
@@ -238,9 +239,15 @@ function updateSetsCount(newCount) {
 }
 
 .exercise-card__name {
+  display: -webkit-box;
+  word-break: break-word;
   font-size: 20px;
   font-weight: 800;
   color: var(--text);
+  overflow: hidden;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .exercise-card__name-input {
