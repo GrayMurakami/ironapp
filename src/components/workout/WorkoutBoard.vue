@@ -165,28 +165,32 @@ function getNextExercise(block) {
     </header>
 
     <div class="day-tabs">
-      <template
-       v-for="(day, index) in days"
-       :key="day.id"
+      <button
+        v-for="(day, index) in days"
+        :key="day.id"
+        class="day-tab"
+        :class="{
+          active: activeDayIndex === index,
+          'day-tab__editing': isEditMode && activeDayIndex === index
+        }"
+        @click="activeDayIndex = index"
       >
-        <input
-          v-if="isEditMode && activeDayIndex === index"
-          v-model="day.name"
-          class="day-tab day-tab__editing"
-          type="text"
-          maxlength="15"
-          @input="renameDay(day)"
-        />
-        <button
-          v-else
-          class="day-tab"
-          :class="{ active: activeDayIndex === index }"
-          @click="activeDayIndex = index"
-        >
         {{ day.name }}
       </button>
-      </template>
-      
+    </div>
+
+    <div
+      v-if="isEditMode && activeDay"
+      class="day-title"
+    >
+      <input 
+        v-model="activeDay.name"
+        class="day-title__input"
+        type="text"
+        maxlength="20"
+        @input="renameDay(activeDay)"
+      />
+      <div class="day-title__line"/>
     </div>
 
     <div
@@ -205,9 +209,6 @@ function getNextExercise(block) {
         @click="removeCurrentDay"
       >
         ✕ Remove
-          <span class="day-actions__remove-name">
-            {{ activeDay.name }}
-          </span>
       </button>
     </div>
 
@@ -388,6 +389,7 @@ function getNextExercise(block) {
   font-family: var(--font);
   font-size: 13px;
   font-weight: 700;
+  text-transform: uppercase;
   cursor: pointer;
 }
 
@@ -397,10 +399,43 @@ function getNextExercise(block) {
   color: var(--accent);
 }
 
+.day-tab__editing {
+  background: var(--accent-soft);
+  border-style: dashed;
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.day-title {
+  margin-top: 18px;
+}
+
+.day-title__input {
+  width: 100%;
+  padding: 0;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--accent);
+  font-family: var(--display);
+  font-size: 32px;
+  font-weight: 400;
+  letter-spacing: .5px;
+  line-height: 1.05;
+  text-transform: lowercase;
+}
+
+.day-title__line {
+  height: 2px;
+  border-radius: 1px;
+  margin-top: 7px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+}
+
 .day-actions {
   display: flex;
-  gap: 15px;
-  margin: 16px 0;
+  gap: 10px;
+  margin: 18px 0 0;
 }
 
 .day-actions__add {
@@ -413,7 +448,7 @@ function getNextExercise(block) {
   font-family: var(--mono);
   font-size: 12px;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
   cursor: pointer;
 }
@@ -422,27 +457,15 @@ function getNextExercise(block) {
   flex: 1;
   padding: 13px;
   border-radius: 14px;
-  border: 1.5px dashed var(--error-red);
-  background: var(--bg-card);
+  border: 1.5px dashed rgba(239, 68, 68, .55);
+  background: rgba(239, 68, 68, .06);
   color: var(--error-red);
   font-family: var(--mono);
   font-size: 12px;
   font-weight: 700;
-  letter-spacing: 1px;
-  white-space: normal;
-  line-height: 1.3;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
   cursor: pointer;
-}
-
-.day-actions__remove-name {
-  display: -webkit-box;
-  font-size: 10px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-clamp: 2;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
 }
 
 .day-progress {

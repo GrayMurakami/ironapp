@@ -182,7 +182,7 @@ export const useProgramStore = defineStore('program', () => {
         .from('program_days')
         .select('*, program_exercises(*)')
         .order('order_index', { ascending: true })
-        .order('order_index', { ascending: true, foreighTable: 'program_exercises' })
+        .order('order_index', { ascending: true, foreignTable: 'program_exercises' })
 
       if (fetchError) throw fetchError
       days.value = data;
