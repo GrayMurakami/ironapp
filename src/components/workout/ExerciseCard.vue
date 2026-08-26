@@ -55,9 +55,17 @@ function updateSetsCount(newCount) {
     :class="{ 'exercise-card__edit': isEditMode }"
   >
     <div class="exercise-card__head">
-      <span class="exercise-card__num">
-        {{ String(index + 1).padStart(2, '0') }}
-      </span>
+      <div class="exercise-card__head-start">
+        <span
+          v-if="isEditMode"
+          class="exercise-card__drag"
+        >
+          ⠿
+        </span>
+        <span class="exercise-card__num">
+          {{ String(index + 1).padStart(2, '0') }}
+        </span>
+      </div>
       <div class="exercise-card__title">
         <span
           v-if="!isEditMode" 
@@ -215,6 +223,26 @@ function updateSetsCount(newCount) {
   align-items: center;
   gap: 16px;
   margin-bottom: 17px;
+}
+
+.exercise-card__head-start {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.exercise-card__drag {
+  flex: none;
+  width: 20px;
+  text-align: center;
+  font-size: 18px;
+  color: var(--text-muted);
+  cursor: grab;
+  touch-action: none;
+}
+
+.exercise-card__drag:active {
+  cursor: grabbing;
 }
 
 .exercise-card__num {

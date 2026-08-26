@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/auth'
 import { useProgramStore } from '@/stores/program'
+import draggable from 'vuedraggable' 
 import ExerciseCard from './ExerciseCard.vue'
 import iconJournal from '@/assets/icons/journal.png'
 import iconEdit from '@/assets/icons/edit.png'
@@ -129,6 +130,11 @@ function getNextExercise(block) {
   const currentIndex = blocks.indexOf(block);
   const next = blocks[currentIndex + 1];
   return next && next.type === 'single' ? next.exercises[0] : null
+}
+
+function onExercisesReorder() {
+  const flatExercises = displayBlocks.value.flatMap((block) => block.exercises);
+  program.reorderExercises(activeDay.value.id, flatExercises) 
 }
 </script>
 
@@ -263,20 +269,29 @@ function getNextExercise(block) {
       </div>
     </div>
 
-    <div
+    <draggable
       v-if="activeDay"
+      v-model="displayBlocks"
+      item-key="0"
+      tag="div"
       class="exercises"
+      handle=".exercise-card__drag"
+      :animation="200"
+      @end="onExercisesReorder"
     >
-      <template
-        v-for="block in displayBlocks"
-        :key="block.exercises[0].id"
-      >
+      <template #item="{ element: block }">
         <div
           v-if="block.type === 'superset'"
           class="superset"
         >
           <div class="superset__tag">
-            Superset · rest between sets optional
+            <span
+              v-if="isEditMode"
+              class="exercise-card__drag"
+            >
+              ⠿
+            </span>
+              Superset · rest between sets optional
           </div>
           <ExerciseCard
             v-for="(exercise, i) in block.exercises"
@@ -300,7 +315,7 @@ function getNextExercise(block) {
           @link="linkExercises(block.exercises[0], $event)"
         />
       </template>
-    </div>
+    </draggable>
 
     <div
       v-if="activeDay && isEditMode"
