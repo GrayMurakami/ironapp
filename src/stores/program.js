@@ -174,6 +174,21 @@ export const useProgramStore = defineStore('program', () => {
     }
   }
 
+  async function reorderExercises(dayId, exercises) {
+    const day = days.value.find((d) => d.id === dayId);
+    if (day) {
+      day.program_exercises = exercises
+    }
+
+    const updates = exercises.map((exercise, index) => supabase
+      .from('program_exercises')
+      .update({ order_index: index })
+      .eq('id', exercise.id)
+    )
+
+    await Promise.all(updates)
+  }
+
   async function fetchDays() {
     error.value = null;
 
@@ -207,6 +222,7 @@ export const useProgramStore = defineStore('program', () => {
     deleteExercise,
     linkExercises,
     unlinkExercise,
+    reorderExercises,
     fetchDays
   }
 });
