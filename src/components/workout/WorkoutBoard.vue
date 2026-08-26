@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/auth'
 import { useProgramStore } from '@/stores/program'
@@ -13,6 +13,7 @@ import '@/styles/shared.css'
 const auth = useAuthStore();
 const program = useProgramStore();
 const isEditMode = ref(false);
+const draggableBlocks = ref([]);
 const newExerciseName = ref('');
 const activeDayIndex = ref(0);
 
@@ -54,7 +55,11 @@ const progressPercent = computed(() => {
   return Math.round((doneSets.value / totalSets.value) * 100)
 });
 
-const displayBlocks = computed(() => {
+function toggleEditMode() {
+  isEditMode.value = !isEditMode.value;
+}
+
+function buildBlocks() {
   if (!activeDay.value) return []
 
   const exercises = activeDay.value.program_exercises;
@@ -81,11 +86,15 @@ const displayBlocks = computed(() => {
   }
 
   return blocks
-});
-
-function toggleEditMode() {
-  isEditMode.value = !isEditMode.value;
 }
+
+watch(
+  () => [activeDay.value, activeDay.value?.program_exercises.length, activeDay.value?.program_exercises.map((e) => e.superset_group).join()],
+  () => {
+    draggableBlocks.value = buildBlocks()
+  },
+  { immediate: true }
+);
 
 function renameDay(day) {
   clearTimeout(renameTimer);
@@ -126,14 +135,14 @@ function unlinkExercise(exercise) {
 }
 
 function getNextExercise(block) {
-  const blocks = displayBlocks.value;
+  const blocks = draggableBlocks.value;
   const currentIndex = blocks.indexOf(block);
   const next = blocks[currentIndex + 1];
   return next && next.type === 'single' ? next.exercises[0] : null
 }
 
 function onExercisesReorder() {
-  const flatExercises = displayBlocks.value.flatMap((block) => block.exercises);
+  const flatExercises = draggableBlocks.value.flatMap((block) => block.exercises);
   program.reorderExercises(activeDay.value.id, flatExercises) 
 }
 </script>
@@ -271,11 +280,15 @@ function onExercisesReorder() {
 
     <draggable
       v-if="activeDay"
-      v-model="displayBlocks"
+      v-model="draggableBlocks"
       item-key="0"
       tag="div"
       class="exercises"
-      handle=".exercise-card__drag"
+      :handle="isEditMode ? '.exercise-card__drag' : undefined"
+      :delay="isEditMode ? 0 : 500"
+      :delay-on-touch-only="true"
+      :touch-start-threshold="10"
+      :force-fallback="true"
       :animation="200"
       @end="onExercisesReorder"
     >
