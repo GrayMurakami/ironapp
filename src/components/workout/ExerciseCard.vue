@@ -10,7 +10,14 @@ const props = defineProps({
   nextExercise: { type: Object, default: null },
 });
 
-const emit = defineEmits(['remove', 'link', 'unlink']);
+const emit = defineEmits(
+  [
+    'remove',
+    'link',
+    'unlink',
+    'start-rest'
+  ]
+);
 
 const program = useProgramStore();
 let saveTimer = null;
@@ -23,8 +30,13 @@ function scheduleSave() {
 }
 
 function toggleSetDone(setIndex) {
-  props.exercise.sets_data[setIndex].done = !props.exercise.sets_data[setIndex].done;
+  const set = props.exercise.sets_data[setIndex];
+  set.done = !set.done;
   scheduleSave();
+
+  if (set.done && props.exercise.rest_seconds > 0) {
+    emit('start-rest', props.exercise.rest_seconds)
+  }
 }
 
 function updateName() {

@@ -148,6 +148,7 @@ function onExercisesReorder() {
 </script>
 
 <template>
+  <RestTimer :seconds="60" />
   <div class="board">
     <header class="board__head">
       <h1 class="board__brand">
