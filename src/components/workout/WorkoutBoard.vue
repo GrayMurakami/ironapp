@@ -3,8 +3,9 @@ import { ref, computed, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/auth'
 import { useProgramStore } from '@/stores/program'
-import draggable from 'vuedraggable' 
 import ExerciseCard from './ExerciseCard.vue'
+import RestTimer from './RestTimer.vue'
+import draggable from 'vuedraggable' 
 import iconJournal from '@/assets/icons/journal.png'
 import iconEdit from '@/assets/icons/edit.png'
 import iconLogout from '@/assets/icons/logout.png'
@@ -16,6 +17,7 @@ const isEditMode = ref(false);
 const draggableBlocks = ref([]);
 const newExerciseName = ref('');
 const activeDayIndex = ref(0);
+const restSeconds = ref(null);
 
 let renameTimer = null;
 
@@ -54,6 +56,14 @@ const progressPercent = computed(() => {
   if (totalSets.value === 0) return 0
   return Math.round((doneSets.value / totalSets.value) * 100)
 });
+
+function startRest(seconds) {
+  restSeconds.value = seconds;
+}
+
+function closeRest() {
+  restSeconds.value = 0;
+}
 
 function toggleEditMode() {
   isEditMode.value = !isEditMode.value;
@@ -315,6 +325,7 @@ function onExercisesReorder() {
             :is-superset-first="i === 0"
             @remove="removeExercise(exercise.id)"
             @unlink="unlinkExercise(exercise)"
+            @start-rest="startRest"
           />
         </div>
 
@@ -326,6 +337,7 @@ function onExercisesReorder() {
           :next-exercise="getNextExercise(block)"
           @remove="removeExercise(block.exercises[0].id)"
           @link="linkExercises(block.exercises[0], $event)"
+          @start-rest="startRest"
         />
       </template>
     </draggable>
@@ -345,6 +357,12 @@ function onExercisesReorder() {
       </button>
     </div>
   </div>
+
+  <RestTimer
+    v-if="restSeconds !== null"
+    :seconds="restSeconds"
+    @close="closeRest"
+  />
 </template>
 
 <style scoped>
