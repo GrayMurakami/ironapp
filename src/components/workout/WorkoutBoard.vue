@@ -3,7 +3,10 @@ import { ref, computed, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/auth'
 import { useProgramStore } from '@/stores/program'
+import { getRandomPhrase } from '@/data/motivationalPhrases'
+import FinishSummary from './FinishSummary.vue'
 import ExerciseCard from './ExerciseCard.vue'
+import DayTabs from './DayTabs.vue'
 import RestTimer from './RestTimer.vue'
 import draggable from 'vuedraggable' 
 import iconJournal from '@/assets/icons/journal.png'
@@ -12,17 +15,20 @@ import iconLogout from '@/assets/icons/logout.png'
 import '@/styles/shared.css'
 
 const auth = useAuthStore();
-const workoutStartedAt = ref(null);
 const program = useProgramStore();
 const isEditMode = ref(false);
 const draggableBlocks = ref([]);
 const newExerciseName = ref('');
 const activeDayIndex = ref(0);
+
 const restSeconds = ref(null);
 const restExerciseName = ref('');
 const restExerciseIndex = ref(0);
 
-let renameTimer = null;
+const workoutStartedAt = ref(null);
+const showSummary = ref(false);
+const summaryData = ref(null);
+const isFinishing = ref(false);
 
 const { appNameDemo } = storeToRefs(auth);
 const { days } = storeToRefs(program);
@@ -117,26 +123,6 @@ watch(
   { immediate: true }
 );
 
-function renameDay(day) {
-  clearTimeout(renameTimer);
-  renameTimer = setTimeout(() => {
-    program.updateDayName(day.id, day.name)
-  }, 600);
-}
-
-async function addNewDay() {
-  await program.addDay();
-  activeDayIndex.value = days.value.length - 1
-}
-
-async function removeCurrentDay() {
-  const dayId = activeDay.value.id;
-  await program.deleteDay(dayId);
-  if (activeDayIndex.value >= days.value.length) {
-    activeDayIndex.value = Math.max(0, days.value.length - 1)
-  }
-}
-
 async function addExercise() {
   if (!newExerciseName.value.trim()) return
   await program.addExercise(activeDay.value.id, newExerciseName.value.trim());
@@ -165,6 +151,44 @@ function getNextExercise(block) {
 function onExercisesReorder() {
   const flatExercises = draggableBlocks.value.flatMap((block) => block.exercises);
   program.reorderExercises(activeDay.value.id, flatExercises) 
+}
+
+async function finishWorkout() {
+  if (!activeDay.value || isFinishing.value) return
+
+  isFinishing.value = true;
+  const startedAt = workoutStartedAt.value ?? new Date();
+  const finishedAt = new Date();
+
+  const exercises = activeDay.value.program_exercises;
+
+  try {
+    await program.saveWorkoutLog({
+      dayId: activeDay.value.id,
+      dayName: activeDay.value.name,
+      startedAt: startedAt.toISOString(),
+      exercises,
+    });
+
+    summaryData.value = {
+      phrase: getRandomPhrase(),
+      dayName: activeDay.value.name,
+      durationMs: finishedAt - startedAt,
+      exerciseCount: exercises.length,
+      setsTotal: totalSets.value,
+      setsDone: doneSets.value,
+      volume: volume.value,
+    }
+    showSummary.value = true;
+    workoutStartedAt.value = null;
+  } finally {
+    isFinishing.value = false;
+  }
+}
+
+function closeSummary() {
+  showSummary.value = false;
+  summaryData.value = null;
 }
 </script>
 
@@ -200,53 +224,12 @@ function onExercisesReorder() {
       </div>
     </header>
 
-    <div class="day-tabs">
-      <button
-        v-for="(day, index) in days"
-        :key="day.id"
-        class="day-tab"
-        :class="{
-          active: activeDayIndex === index,
-          'day-tab__editing': isEditMode && activeDayIndex === index
-        }"
-        @click="activeDayIndex = index"
-      >
-        {{ day.name }}
-      </button>
-    </div>
-
-    <div
-      v-if="isEditMode && activeDay"
-      class="day-title"
-    >
-      <input 
-        v-model="activeDay.name"
-        class="day-title__input"
-        type="text"
-        maxlength="20"
-        @input="renameDay(activeDay)"
-      />
-      <div class="day-title__line"/>
-    </div>
-
-    <div
-      v-if="isEditMode"
-      class="day-actions"
-    >
-      <button
-        class="day-actions__add"
-        @click="addNewDay"
-      >
-        + Add day
-      </button>
-      <button
-        v-if="isEditMode && activeDay"
-        class="day-actions__remove"
-        @click="removeCurrentDay"
-      >
-        ✕ Remove
-      </button>
-    </div>
+    <DayTabs 
+      :days="days"
+      v-model:active-day-index="activeDayIndex"
+      :active-day="activeDay"
+      :is-edit-mode="isEditMode"
+    />
 
     <div
       v-if="activeDay"
@@ -431,102 +414,6 @@ function onExercisesReorder() {
 .icon-btn.active {
   background: var(--accent-soft);
   border-color: var(--accent);
-}
-
-.day-tabs {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  margin-bottom: 8px;
-}
-
-.day-tab {
-  flex: none;
-  padding: 8px 14px;
-  border-radius: 10px;
-  background: var(--bg-card);
-  border: 1.5px solid var(--border);
-  color: var(--text-secondary);
-  font-family: var(--font);
-  font-size: 13px;
-  font-weight: 700;
-  text-transform: uppercase;
-  cursor: pointer;
-}
-
-.day-tab.active {
-  background: var(--accent-soft);
-  border-color: var(--accent);
-  color: var(--accent);
-}
-
-.day-tab__editing {
-  background: var(--accent-soft);
-  border-style: dashed;
-  border-color: var(--accent);
-  color: var(--accent);
-}
-
-.day-title {
-  margin-top: 18px;
-}
-
-.day-title__input {
-  width: 100%;
-  padding: 0;
-  background: none;
-  border: none;
-  outline: none;
-  color: var(--accent);
-  font-family: var(--display);
-  font-size: 32px;
-  font-weight: 400;
-  letter-spacing: .5px;
-  line-height: 1.05;
-  text-transform: lowercase;
-}
-
-.day-title__line {
-  height: 2px;
-  border-radius: 1px;
-  margin-top: 7px;
-  background: linear-gradient(90deg, var(--accent), transparent);
-}
-
-.day-actions {
-  display: flex;
-  gap: 10px;
-  margin: 18px 0 0;
-}
-
-.day-actions__add {
-  flex: 1;
-  padding: 13px;
-  border-radius: 14px;
-  border: 1.5px dashed var(--border);
-  background: none;
-  color: var(--text-muted);
-  font-family: var(--mono);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  cursor: pointer;
-}
-
-.day-actions__remove {
-  flex: 1;
-  padding: 13px;
-  border-radius: 14px;
-  border: 1.5px dashed rgba(239, 68, 68, .55);
-  background: rgba(239, 68, 68, .06);
-  color: var(--error-red);
-  font-family: var(--mono);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  cursor: pointer;
 }
 
 .day-progress {

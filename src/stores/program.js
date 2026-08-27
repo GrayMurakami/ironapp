@@ -189,6 +189,51 @@ export const useProgramStore = defineStore('program', () => {
     await Promise.all(updates)
   }
 
+  async function saveWorkoutLog({ dayId, dayName, startedAt, exercises }) {
+    const { data: { user } } = await supabase.auth.getUser();
+
+    const { data: logRow, error: logError } = await supabase
+      .from('workout_logs')
+      .insert({
+        user_id: user.id,
+        day_id: dayId,
+        day_name: dayName,
+        started_at: startedAt,
+        finished_at: new Date().toISOString(),
+      })
+      .select()
+      .single()
+
+    if (logError) throw logError
+
+    const logExerciseRows = exercises.map((exercise, index) => ({
+      log_id: logRow.id,
+      name: exercise.name,
+      sets_data: exercise.sets_data,
+      order_index: index,
+      superset_group: exercise.superset_group, 
+    }));
+
+    const { error: logExercisesError } = await supabase
+      .from('workout_log_exercises')
+      .insert(logExerciseRows)
+
+    if (logExercisesError) throw logExercisesError
+
+    for (const exercise of exercises) {
+      const resetSetsData = exercise.sets_data.map((set) => ({ ...set, done: false }));
+
+      const { error: resetError } = await supabase
+        .from('program_exercises')
+        .update({ sets_data: resetSetsData })
+        .eq('id', exercise.id)
+
+      if (resetError) throw resetError
+
+      exercise.sets_data.forEach((set) => { set.done = false });
+    }
+  }
+
   async function fetchDays() {
     error.value = null;
 
@@ -223,6 +268,7 @@ export const useProgramStore = defineStore('program', () => {
     linkExercises,
     unlinkExercise,
     reorderExercises,
+    saveWorkoutLog,
     fetchDays
   }
 });
