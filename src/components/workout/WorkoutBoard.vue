@@ -12,6 +12,7 @@ import iconLogout from '@/assets/icons/logout.png'
 import '@/styles/shared.css'
 
 const auth = useAuthStore();
+const workoutStartedAt = ref(null);
 const program = useProgramStore();
 const isEditMode = ref(false);
 const draggableBlocks = ref([]);
@@ -58,6 +59,12 @@ const progressPercent = computed(() => {
   if (totalSets.value === 0) return 0
   return Math.round((doneSets.value / totalSets.value) * 100)
 });
+
+function markWorkoutStarted() {
+  if (!workoutStartedAt.value) {
+    workoutStartedAt.value = new Date();
+  }
+}
 
 function startRest({ seconds, name, index }) {
   restSeconds.value = seconds;
@@ -330,6 +337,7 @@ function onExercisesReorder() {
             @remove="removeExercise(exercise.id)"
             @unlink="unlinkExercise(exercise)"
             @start-rest="startRest"
+            @activity="markWorkoutStarted"
           />
         </div>
 
@@ -342,6 +350,7 @@ function onExercisesReorder() {
           @remove="removeExercise(block.exercises[0].id)"
           @link="linkExercises(block.exercises[0], $event)"
           @start-rest="startRest"
+          @activity="markWorkoutStarted"
         />
       </template>
     </draggable>

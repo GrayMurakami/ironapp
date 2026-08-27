@@ -12,10 +12,11 @@ const props = defineProps({
 
 const emit = defineEmits(
   [
-    'remove',
+    'activity',
+    'start-rest',
     'link',
     'unlink',
-    'start-rest'
+    'remove',
   ]
 );
 
@@ -29,7 +30,13 @@ function scheduleSave() {
   }, 600);
 }
 
+function handleFieldChange() {
+  scheduleSave();
+  emit('activity');
+}
+
 function toggleSetDone(setIndex) {
+  emit('activity');
   const set = props.exercise.sets_data[setIndex];
   set.done = !set.done;
   scheduleSave();
@@ -132,7 +139,7 @@ function updateSetsCount(newCount) {
           v-model.number="exercise.rest_seconds"
           type="number"
           inputmode="numeric"
-          @input="scheduleSave"
+          @input="handleFieldChange"
         />
       </div>
       <span class="exercise-card__unit">
@@ -161,7 +168,7 @@ function updateSetsCount(newCount) {
             type="number"
             inputmode="decimal"
             placeholder="-"
-            @input="scheduleSave"
+            @input="handleFieldChange"
           />
         </div>
         
@@ -181,7 +188,7 @@ function updateSetsCount(newCount) {
             type="number"
             inputmode="numeric"
             placeholder="-"
-            @input="scheduleSave"
+            @input="handleFieldChange"
           />
         </div>
 
