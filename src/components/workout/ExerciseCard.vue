@@ -34,7 +34,9 @@ function toggleSetDone(setIndex) {
   set.done = !set.done;
   scheduleSave();
 
-  if (set.done && props.exercise.rest_seconds > 0) {
+  const isLastSet = setIndex === props.exercise.sets_data.length - 1;
+
+  if (set.done && props.exercise.rest_seconds > 0 && !isLastSet) {
     emit('start-rest', { 
       seconds: props.exercise.rest_seconds,
       name: props.exercise.name,
