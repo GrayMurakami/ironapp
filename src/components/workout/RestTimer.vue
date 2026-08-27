@@ -215,8 +215,11 @@ onUnmounted(() => {
 
 .rest-exercise {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
+  max-width: 280px;
+  text-align: center;
 }
 
 .rest-exercise__num {
@@ -237,6 +240,7 @@ onUnmounted(() => {
   font-weight: 800;
   letter-spacing: .4px;
   color: var(--text);
+  line-height: 1.3;
 }
 
 .rest-actions {

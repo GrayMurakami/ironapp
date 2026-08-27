@@ -296,6 +296,7 @@ function updateSetsCount(newCount) {
   word-break: break-word;
   font-size: 20px;
   font-weight: 800;
+  line-height: 1.2;
   color: var(--text);
   overflow: hidden;
   line-clamp: 2;

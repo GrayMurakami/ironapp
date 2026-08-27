@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { nextTick } from 'vue'
 import { useProgramStore } from '@/stores/program'
 
 const props = defineProps({
@@ -27,7 +27,8 @@ function renameDay(day) {
 
 async function addNewDay() {
   await program.addDay();
-  emit('update:activeDayIndex', props.days.length);
+  await nextTick();
+  emit('update:activeDayIndex', props.days.length - 1);
 }
 
 async function removeCurrentDay() {
@@ -95,6 +96,11 @@ async function removeCurrentDay() {
   gap: 8px;
   overflow-x: auto;
   margin-bottom: 8px;
+  scrollbar-width: none;
+}
+
+.day-tabs::-webkit-scrollbar {
+  display: none;
 }
 
 .day-tab {
