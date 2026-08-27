@@ -35,7 +35,11 @@ function toggleSetDone(setIndex) {
   scheduleSave();
 
   if (set.done && props.exercise.rest_seconds > 0) {
-    emit('start-rest', props.exercise.rest_seconds)
+    emit('start-rest', { 
+      seconds: props.exercise.rest_seconds,
+      name: props.exercise.name,
+      index: props.index,
+    });
   }
 }
 

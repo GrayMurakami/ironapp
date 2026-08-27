@@ -18,6 +18,8 @@ const draggableBlocks = ref([]);
 const newExerciseName = ref('');
 const activeDayIndex = ref(0);
 const restSeconds = ref(null);
+const restExerciseName = ref('');
+const restExerciseIndex = ref(0);
 
 let renameTimer = null;
 
@@ -57,12 +59,14 @@ const progressPercent = computed(() => {
   return Math.round((doneSets.value / totalSets.value) * 100)
 });
 
-function startRest(seconds) {
+function startRest({ seconds, name, index }) {
   restSeconds.value = seconds;
+  restExerciseName.value = name;
+  restExerciseIndex.value = index;
 }
 
 function closeRest() {
-  restSeconds.value = 0;
+  restSeconds.value = null;
 }
 
 function toggleEditMode() {
@@ -361,6 +365,8 @@ function onExercisesReorder() {
   <RestTimer
     v-if="restSeconds !== null"
     :seconds="restSeconds"
+    :exercise-name="restExerciseName"
+    :exercise-index="restExerciseIndex"
     @close="closeRest"
   />
 </template>
