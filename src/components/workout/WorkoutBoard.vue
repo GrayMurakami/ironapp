@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/auth'
 import { useProgramStore } from '@/stores/program'
@@ -15,6 +16,7 @@ import iconLogout from '@/assets/icons/logout.png'
 import '@/styles/shared.css'
 
 const auth = useAuthStore();
+const router = useRouter();
 const program = useProgramStore();
 const isEditMode = ref(false);
 const draggableBlocks = ref([]);
@@ -207,6 +209,7 @@ function closeSummary() {
         <button
           class="icon-btn"
           aria-label="Journal"
+          @click="router.push('/journal')"
         >
           <img :src="iconJournal" alt="" />
         </button>
