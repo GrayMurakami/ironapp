@@ -1,5 +1,4 @@
 <script setup>
-import { ref } from 'vue'
 import { useProgramStore } from '@/stores/program'
 
 const props = defineProps({

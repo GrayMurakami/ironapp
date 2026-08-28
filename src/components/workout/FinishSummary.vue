@@ -13,7 +13,11 @@ function formatDuration(ms) {
 }
 
 function formatDate(date) {
-  return new Intl.DateTimeFormat('en-US', { weekday: 'long', month: 'short', day: 'numeric' }).format(date);
+  return new Intl.DateTimeFormat('en-US', { 
+    weekday: 'long',
+    month: 'short',
+    day: 'numeric'
+  }).format(date);
 }
 </script>
 

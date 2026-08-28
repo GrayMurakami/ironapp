@@ -122,7 +122,7 @@ function toggleExercise(exercise) {
           <path d="M11 6L5 12L11 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
           <path d="M18 6L12 12L18 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
-        Back
+          Back
       </button>
       <button
         class="continue"
