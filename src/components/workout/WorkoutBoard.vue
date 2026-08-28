@@ -352,6 +352,15 @@ function closeSummary() {
         + add exercise
       </button>
     </div>
+
+    <button
+      v-if="activeDay"
+      class="finish-btn"
+      :disabled="isFinishing"
+      @click="finishWorkout"
+    >
+      {{ isFinishing ? 'Saving・・・' : 'Finish workout' }}
+    </button>
   </div>
 
   <RestTimer
@@ -360,6 +369,12 @@ function closeSummary() {
     :exercise-name="restExerciseName"
     :exercise-index="restExerciseIndex"
     @close="closeRest"
+  />
+
+  <FinishSummary
+    v-if="showSummary"
+    :data="summaryData"
+    @close="closeSummary"
   />
 </template>
 
@@ -544,5 +559,25 @@ function closeSummary() {
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
+}
+
+.finish-btn {
+  width: 100%;
+  margin-top: 20px;
+  padding: 16px;
+  border: none;
+  border-radius: 14px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 8px 24px var(--accent-glow);
+}
+
+.finish-btn:disabled {
+  opacity: .6;
+  cursor: default;
 }
 </style>
