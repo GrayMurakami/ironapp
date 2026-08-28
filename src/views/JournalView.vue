@@ -148,6 +148,9 @@ onMounted(() => {
           >
             <span class="log-exercise__name">
               {{ exercise.name }}
+                <span class="log-exercise__label">
+                  (kg × reps)
+                </span>
             </span>
 
             <div 
@@ -354,7 +357,12 @@ onMounted(() => {
   font-size: 14px;
   font-weight: 700;
   color: var(--text);
-  margin-bottom: 6px;
+  margin-bottom: 10px;
+}
+
+.log-exercise__label {
+  margin-left: 2px;
+  color: var(--cyan);
 }
 
 .log-exercise__sets {
