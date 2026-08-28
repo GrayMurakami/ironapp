@@ -9,7 +9,7 @@ function formatDuration(ms) {
   const totalMinutes = Math.floor(ms / 60000);
   const hours = Math.floor(totalMinutes / 60);
   const minutes = totalMinutes % 60;
-  return hours > 0 ? `${hours}h ${minutes}min` : `${minutes}min`
+  return hours > 0 ? `${hours} h ${minutes} min` : `${minutes} min`
 }
 
 function formatDate(date) {
@@ -37,19 +37,21 @@ function formatDate(date) {
       </span>
     </div>
 
+    <span class="finish__divider" />
+
     <div class="finish-duration">
+      <span class="finish-duration__label">
+        Workout time: 
+      </span>
       <span class="finish-duration__value">
         {{ formatDuration(data.durationMs) }}
-      </span>
-      <span class="finish-duration__label">
-        Total time: 
       </span>
     </div>
 
     <div class="finish-stats">
       <div class="finish-stat">
         <span class="finish-stat__value">
-          {{ data.exerciseCount }}
+          {{ data.exercisesDone }} / {{ data.exerciseCount }}
         </span>
         <span class="finish-stat__label">
           Exercises
@@ -57,7 +59,7 @@ function formatDate(date) {
       </div>
       <div class="finish-stat">
         <span class="finish-stat__value">
-          {{ data.setsDone }}/{{ data.setsTotal }}
+          {{ data.setsDone }} / {{ data.setsTotal }}
         </span>
         <span class="finish-stat__label">
           Sets done
@@ -121,8 +123,9 @@ function formatDate(date) {
 
 .finish-meta {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
 }
 
 .finish-meta__day {
@@ -133,15 +136,21 @@ function formatDate(date) {
 
 .finish-meta__date {
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: 15px;
   color: var(--text-muted);
+}
+
+.finish__divider {
+  width: 1px;
+  height: 20px;
+  background: var(--border-strong);
 }
 
 .finish-duration {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
 }
 
 .finish-duration__value {

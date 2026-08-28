@@ -161,6 +161,18 @@ async function finishWorkout() {
   const finishedAt = new Date();
 
   const exercises = activeDay.value.program_exercises;
+  const touchedExercises = exercises.filter((e) => e.sets_data.some((s) => s.done)).length;
+
+  const snapshot = {
+    phrase: getRandomPhrase(),
+    dayName: activeDay.value.name,
+    durationMs: finishedAt - startedAt,
+    exerciseCount: exercises.length,
+    exercisesDone: touchedExercises,
+    setsTotal: totalSets.value,
+    setsDone: doneSets.value,
+    volume: volume.value,
+  }
 
   try {
     await program.saveWorkoutLog({
@@ -170,15 +182,7 @@ async function finishWorkout() {
       exercises,
     });
 
-    summaryData.value = {
-      phrase: getRandomPhrase(),
-      dayName: activeDay.value.name,
-      durationMs: finishedAt - startedAt,
-      exerciseCount: exercises.length,
-      setsTotal: totalSets.value,
-      setsDone: doneSets.value,
-      volume: volume.value,
-    }
+    summaryData.value = snapshot;
     showSummary.value = true;
     workoutStartedAt.value = null;
   } finally {
@@ -563,7 +567,7 @@ function closeSummary() {
 
 .finish-btn {
   width: 100%;
-  margin-top: 20px;
+  margin-top: 40px;
   padding: 16px;
   border: none;
   border-radius: 14px;
