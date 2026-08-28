@@ -100,7 +100,8 @@
   gap: 9px;
   padding: 15px;
   border-radius: 14px;
-  background: transparent;
+  /* background: transparent; */
+  background: var(--bg-card);
   border: 1.5px solid var(--border);
   color: var(--text-secondary);
   font-family: var(--font);
