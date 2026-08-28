@@ -216,6 +216,7 @@ function formatDate(date) {
   font-family: var(--font);
   font-size: 15px;
   font-weight: 800;
+  text-transform: uppercase;
   cursor: pointer;
   box-shadow: 0 8px 24px var(--accent-glow);
 }

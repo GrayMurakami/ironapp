@@ -7,9 +7,23 @@ const router = useRouter();
 const journal = useJournalStore();
 
 const expandedLogId = ref(null);
+const editingLogId = ref(null);
+const saveTimer = new Map();
 
 function toggleExpand(logId) {
   expandedLogId.value = expandedLogId.value === logId ? null : logId;
+}
+
+function toggleEdit(logId) {
+  editingLogId.value = editingLogId.value === logId ? null : logId;
+}
+
+function scheduleLogSave(exercise) {
+  clearTimeout(saveTimer.get(exercise.id));
+  const timer = setTimeout(() => {
+    journal.updateLogExercise(exercise)
+  }, 600);
+  saveTimer.set(exercise.id, timer);
 }
 
 function formatDate(dateString) {
@@ -95,6 +109,13 @@ onMounted(() => {
             </span>
           </div>
           <div class="log-card__head-right">
+            <button
+              v-if="expandedLogId === log.id"
+              class="log-card__edit"
+              @click.stop="toggleEdit(log.id)"
+            >
+              {{ editingLogId === log.id ? 'Done' : 'Edit' }}
+            </button>
             <span class="log-card__duration">
               {{ formatDuration(log) }}
             </span>
@@ -128,7 +149,11 @@ onMounted(() => {
             <span class="log-exercise__name">
               {{ exercise.name }}
             </span>
-            <div class="log-exercise__sets">
+
+            <div 
+              v-if="editingLogId !== log.id"
+              class="log-exercise__sets"
+            >
               <span
                 v-for="(set, i) in exercise.sets_data"
                 :key="i"
@@ -137,6 +162,38 @@ onMounted(() => {
               >
                 {{ set.weight ?? '-' }} × {{ set.reps ?? '-' }}
               </span>
+            </div>
+
+            <div 
+              v-else
+              class="log-exercise__edit"
+            >
+              <div
+                v-for="(set, i) in exercise.sets_data"
+                :key="i"
+                class="log-set-edit"
+              >
+                <span class="log-set__label">
+                  kg:
+                </span>
+                <input
+                  v-model.number="set.weight"
+                  type="number"
+                  inputmode="decimal"
+                  placeholder="kg"
+                  @input="scheduleLogSave(exercise)"
+                />
+                <span class="log-set__label">
+                  reps:
+                </span>
+                <input
+                  v-model.number="set.reps"
+                  type="number"
+                  inputmode="numeric"
+                  placeholder="reps"
+                  @input="scheduleLogSave(exercise)"                
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -279,9 +336,11 @@ onMounted(() => {
 
 .log-card__stats {
   display: flex;
+  align-items: center;
+  justify-content: center;
   gap: 16px;
   padding: 12px 0;
-  font-size: 12px;
+  font-size: 14px;
   color: var(--text-secondary);
 }
 
@@ -300,8 +359,10 @@ onMounted(() => {
 
 .log-exercise__sets {
   display: flex;
+  align-items: center;
+  justify-content: center;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 10px;
 }
 
 .log-set {
@@ -317,6 +378,64 @@ onMounted(() => {
 .log-set.done {
   border-color: var(--green);
   color: var(--green);
+}
+
+.log-card__edit {
+  padding: 5px 10px;
+  border-radius: 8px;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  color: var(--text-secondary);
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.log-exercise__edit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.log-set-edit {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.log-set__label {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  margin-left: 10px;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.log-set-edit input {
+  width: 52px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 13px;
+  text-align: center;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.log-set-edit input::-webkit-outer-spin-button,
+.log-set-edit input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .journal__back {
