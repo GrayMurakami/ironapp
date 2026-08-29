@@ -389,14 +389,14 @@ function closeSummary() {
 .board {
   max-width: 430px;
   margin: 0 auto;
-  padding: 90px 24px 40px;
+  padding: 35px 24px 40px;
 }
 
 .board__head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 18px;
+  margin-bottom: 40px;
 }
 
 .board__brand {
