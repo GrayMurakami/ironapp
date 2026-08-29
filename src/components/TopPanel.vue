@@ -2,16 +2,24 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { useProgramStore } from '@/stores/program'
 import ThemeSwitch from '@/components/ThemeSwitch.vue'
 
 const auth = useAuthStore();
 const router = useRouter();
+const program = useProgramStore();
 
 const isVisible = ref(true);
 let hideTimer = null;
 let touchStartY = 0;
 
 async function handleSignOut() {
+  // const isDemo = auth.user?.email === import.meta.env.VITE_DEMO_EMAIL;
+
+  // if (isDemo) {
+  //   await program.resetDemoProgram();
+  // }
+
   await auth.signOut();
   router.push('/login');
 }
@@ -68,6 +76,21 @@ onUnmounted(() => {
     <ThemeSwitch
       @click="hideNow"
     />
+
+    <button
+      class="top-panel__edit"
+      :class="{ 'top-panel__edit--active': program.isEditMode }"
+      aria-label="Edit mode"
+      @click="program.toggleEditMode(); showPanel()"
+    >
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+        <path d="M17 3a2.83 2.83 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <span class="top-panel__edit-label">
+        edit mode
+      </span>
+    </button>
+
     <button
       v-if="auth.user"
       class="top-panel__exit"
@@ -106,6 +129,50 @@ onUnmounted(() => {
   transform: translateY(-120%);
   opacity: 0;
   pointer-events: none;
+}
+
+.top-panel__edit {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  height: 44px;
+  padding: 0 14px;
+  border-radius: 13px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all .3s cubic-bezier(.4, 0, .2, 1);
+}
+
+.top-panel__edit svg {
+  flex: none;
+}
+
+.top-panel__edit-label {
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  transition: max-width .3s cubic-bezier(.4, 0, .2, 1);
+}
+
+.top-panel__edit--active {
+  gap: 9px;
+  padding: 0 20px;
+  background: var(--accent-soft);
+  border-style: dashed;
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 0 24px var(--accent-glow);
+}
+
+.top-panel__edit--active .top-panel__edit-label {
+  max-width: 78px;
 }
 
 .top-panel__exit {

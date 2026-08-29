@@ -11,13 +11,12 @@ import DayTabs from './DayTabs.vue'
 import RestTimer from './RestTimer.vue'
 import draggable from 'vuedraggable' 
 import iconJournal from '@/assets/icons/journal.png'
-import iconEdit from '@/assets/icons/edit.png'
 import '@/styles/shared.css'
 
 const auth = useAuthStore();
 const router = useRouter();
 const program = useProgramStore();
-const isEditMode = ref(false);
+
 const draggableBlocks = ref([]);
 const newExerciseName = ref('');
 const activeDayIndex = ref(0);
@@ -81,10 +80,6 @@ function startRest({ seconds, name, index }) {
 
 function closeRest() {
   restSeconds.value = null;
-}
-
-function toggleEditMode() {
-  isEditMode.value = !isEditMode.value;
 }
 
 function buildBlocks() {
@@ -212,14 +207,6 @@ function closeSummary() {
         >
           <img :src="iconJournal" alt="" />
         </button>
-        <button
-          class="icon-btn"
-          :class="{ active: isEditMode }"
-          aria-label="Edit"
-          @click="toggleEditMode"
-        >
-          <img :src="iconEdit" alt="" />
-        </button>
       </div>
     </header>
 
@@ -227,7 +214,7 @@ function closeSummary() {
       :days="days"
       v-model:active-day-index="activeDayIndex"
       :active-day="activeDay"
-      :is-edit-mode="isEditMode"
+      :is-edit-mode="program.isEditMode"
     />
 
     <div
@@ -287,8 +274,8 @@ function closeSummary() {
       item-key="0"
       tag="div"
       class="exercises"
-      :handle="isEditMode ? '.exercise-card__drag' : undefined"
-      :delay="isEditMode ? 0 : 500"
+      :handle="program.isEditMode ? '.exercise-card__drag' : undefined"
+      :delay="program.isEditMode ? 0 : 500"
       :delay-on-touch-only="true"
       :touch-start-threshold="10"
       :force-fallback="true"
@@ -302,7 +289,7 @@ function closeSummary() {
         >
           <div class="superset__tag">
             <span
-              v-if="isEditMode"
+              v-if="program.isEditMode"
               class="exercise-card__drag"
             >
               ⠿
@@ -314,7 +301,7 @@ function closeSummary() {
             :key="exercise.id"
             :exercise="exercise"
             :index="activeDay.program_exercises.indexOf(exercise)"
-            :is-edit-mode="isEditMode"
+            :is-edit-mode="program.isEditMode"
             :is-superset-first="i === 0"
             @remove="removeExercise(exercise.id)"
             @unlink="unlinkExercise(exercise)"
@@ -327,7 +314,7 @@ function closeSummary() {
           v-else
           :exercise="block.exercises[0]"
           :index="activeDay.program_exercises.indexOf(block.exercises[0])"
-          :is-edit-mode="isEditMode"
+          :is-edit-mode="program.isEditMode"
           :next-exercise="getNextExercise(block)"
           @remove="removeExercise(block.exercises[0].id)"
           @link="linkExercises(block.exercises[0], $event)"
@@ -338,7 +325,7 @@ function closeSummary() {
     </draggable>
 
     <div
-      v-if="activeDay && isEditMode"
+      v-if="activeDay && program.isEditMode"
       class="add-exercise"
     >
       <input

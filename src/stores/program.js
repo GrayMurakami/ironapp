@@ -5,10 +5,15 @@ import { supabase } from '@/lib/supabase'
 export const useProgramStore = defineStore('program', () => {
   const days = ref([]);
   const loaded = ref(false);
+  const isEditMode = ref(false);
   const error = ref(null);
 
   const hasDays = computed(() => days.value.length > 0);
  
+  function toggleEditMode() {
+    isEditMode.value = !isEditMode.value;
+  }
+
   async function saveInitialProgram(newDays) {
     const { data: { user } } = await supabase.auth.getUser();
 
@@ -261,7 +266,7 @@ export const useProgramStore = defineStore('program', () => {
       .delete()
       .eq('user_id', user.id)
 
-    if (resetDemoError) throw resetDemoError;
+    if (resetDemoError) throw resetDemoError
 
     days.value = [];
   }
