@@ -443,7 +443,7 @@ function closeSummary() {
   border-radius: 2px;
   background: var(--border);
   overflow: hidden;
-  margin-top: 26px;
+  margin-top: 36px;
   margin-bottom: 16px;
 }
 
@@ -482,6 +482,7 @@ function closeSummary() {
 .stat-cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  margin-top: 15px;
   gap: 8px;
 }
 

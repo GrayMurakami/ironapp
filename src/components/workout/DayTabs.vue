@@ -35,7 +35,7 @@ async function removeCurrentDay() {
   const dayId = props.activeDay.id;
   await program.deleteDay(dayId);
   if (props.activeDayIndex >= props.days.length - 1) {
-    emit('update:activeDayIndex', Math.max(0, props.days.length - 2));
+    emit('update:activeDayIndex', Math.max(0, props.days.length - 1));
   }
 }
 </script>
