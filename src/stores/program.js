@@ -253,6 +253,19 @@ export const useProgramStore = defineStore('program', () => {
     }
   }
 
+  async function resetDemoProgram() {
+    const { data: { user } } = await supabase.auth.getUser();
+
+    const { error: resetDemoError } = await supabase
+      .from('program_days')
+      .delete()
+      .eq('user_id', user.id)
+
+    if (resetDemoError) throw resetDemoError;
+
+    days.value = [];
+  }
+
   return {
     days,
     loaded,
@@ -269,6 +282,7 @@ export const useProgramStore = defineStore('program', () => {
     unlinkExercise,
     reorderExercises,
     saveWorkoutLog,
+    resetDemoProgram,
     fetchDays
   }
 });
