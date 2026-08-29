@@ -1,13 +1,20 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import ThemeSwitch from '@/components/ThemeSwitch.vue'
 
 const auth = useAuthStore();
+const router = useRouter();
 
 const isVisible = ref(true);
 let hideTimer = null;
 let touchStartY = 0;
+
+async function handleSignOut() {
+  await auth.signOut();
+  router.push('/login');
+}
 
 function sheduleHide() {
   clearTimeout(hideTimer);
@@ -45,6 +52,12 @@ onMounted(() => {
   window.addEventListener('touchend', onTouchEnd);
   sheduleHide();
 });
+
+onUnmounted(() => {
+  window.removeEventListener('touchstart', onTouchStart)
+  window.removeEventListener('touchend', onTouchEnd)
+  clearTimeout(hideTimer)
+});
 </script>
 
 <template>
@@ -59,7 +72,7 @@ onMounted(() => {
       v-if="auth.user"
       class="top-panel__exit"
       aria-label="Log out"
-      @click="auth.signOut()"
+      @click="handleSignOut"
     >
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
         <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />

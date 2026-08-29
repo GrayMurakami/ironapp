@@ -12,7 +12,6 @@ import RestTimer from './RestTimer.vue'
 import draggable from 'vuedraggable' 
 import iconJournal from '@/assets/icons/journal.png'
 import iconEdit from '@/assets/icons/edit.png'
-import iconLogout from '@/assets/icons/logout.png'
 import '@/styles/shared.css'
 
 const auth = useAuthStore();
@@ -220,13 +219,6 @@ function closeSummary() {
           @click="toggleEditMode"
         >
           <img :src="iconEdit" alt="" />
-        </button>
-        <button
-          class="icon-btn"
-          aria-label="Log out"
-          @click="auth.signOut()"
-        >
-          <img :src="iconLogout" alt="" />
         </button>
       </div>
     </header>
