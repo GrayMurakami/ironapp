@@ -338,7 +338,7 @@ function updateSetsCount(newCount) {
 
 .exercise-card__label {
   font-family: var(--mono);
-  font-size: 17px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;

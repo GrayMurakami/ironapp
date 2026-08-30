@@ -274,8 +274,10 @@ export const useProgramStore = defineStore('program', () => {
   return {
     days,
     loaded,
+    isEditMode,
     error,
     hasDays,
+    toggleEditMode,
     saveInitialProgram,
     updateDayName,
     addDay,

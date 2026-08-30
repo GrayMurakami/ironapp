@@ -28,7 +28,7 @@ function sheduleHide() {
   clearTimeout(hideTimer);
   hideTimer = setTimeout(() => {
     isVisible.value = false;
-  }, 3000);
+  }, 2666);
 }
 
 function showPanel() {
@@ -164,11 +164,10 @@ onUnmounted(() => {
 .top-panel__edit--active {
   gap: 9px;
   padding: 0 20px;
-  background: var(--accent-soft);
-  border-style: dashed;
-  border-color: var(--accent);
-  color: var(--accent);
-  box-shadow: 0 0 24px var(--accent-glow);
+  background: color-mix(in srgb, var(--cyan) 12%, transparent);
+  border-color: var(--cyan);
+  color: var(--cyan);
+  box-shadow: 0 0 24px color-mix(in srgb, var(--cyan) 25%, transparent);
 }
 
 .top-panel__edit--active .top-panel__edit-label {

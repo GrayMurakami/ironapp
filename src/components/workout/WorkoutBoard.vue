@@ -10,7 +10,6 @@ import ExerciseCard from './ExerciseCard.vue'
 import DayTabs from './DayTabs.vue'
 import RestTimer from './RestTimer.vue'
 import draggable from 'vuedraggable' 
-import iconJournal from '@/assets/icons/journal.png'
 import '@/styles/shared.css'
 
 const auth = useAuthStore();
@@ -205,7 +204,13 @@ function closeSummary() {
           aria-label="Journal"
           @click="router.push('/journal')"
         >
-          <img :src="iconJournal" alt="" />
+          <span class="icon-btn__label">
+            log
+          </span>
+          <svg class="icon-btn__icon" width="19" height="19" viewBox="0 0 24 24" fill="none">
+            <path d="M4 4.5A2.5 2.5 0 016.5 2H18a1 1 0 011 1v16.5a.5.5 0 01-.5.5H6.5A2.5 2.5 0 014 17.5v-13z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+            <path d="M8 7h7M8 11h7M8 15h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+          </svg>
         </button>
       </div>
     </header>
@@ -394,27 +399,29 @@ function closeSummary() {
 }
 
 .icon-btn {
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
-  background: var(--bg-card);
-  border: 1.5px solid var(--border);
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 8px;
+  height: 42px;
+  padding: 0 15px;
+  border-radius: 12px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  color: var(--text-secondary);
   cursor: pointer;
-  padding: 0;
 }
 
-.icon-btn img {
-  width: 18px;
-  height: 18px;
-  object-fit: contain;
+.icon-btn__icon {
+  flex: none;
+  color: var(--accent);
 }
 
-.icon-btn.active {
-  background: var(--accent-soft);
-  border-color: var(--accent);
+.icon-btn__label {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
 }
 
 .day-progress {

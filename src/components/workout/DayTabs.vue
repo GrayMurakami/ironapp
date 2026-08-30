@@ -52,7 +52,12 @@ async function removeCurrentDay() {
       }"
       @click="selectDay(index)"
     >
-      {{ day.name }}
+      <span class="day-tab__ghost">
+        {{ index + 1 }}
+      </span>
+      <span class="day-tab__name">
+        {{ day.name }}
+      </span>
     </button>
   </div>
 
@@ -93,7 +98,7 @@ async function removeCurrentDay() {
 <style scoped>
 .day-tabs {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   overflow-x: auto;
   margin-bottom: 8px;
   scrollbar-width: none;
@@ -104,23 +109,58 @@ async function removeCurrentDay() {
 }
 
 .day-tab {
+  position: relative;
   flex: none;
-  padding: 8px 14px;
-  border-radius: 10px;
+  display: flex;
+  align-items: flex-end;
+  min-height: 66px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  overflow: hidden;
   background: var(--bg-card);
   border: 1.5px solid var(--border);
-  color: var(--text-secondary);
-  font-family: var(--font);
-  font-size: 13px;
-  font-weight: 700;
-  text-transform: uppercase;
   cursor: pointer;
+}
+
+.day-tab__ghost {
+  position: absolute;
+  top: -10px;
+  right: 6px;
+  font-family: var(--display);
+  font-size: 56px;
+  line-height: 1;
+  color: rgba(255, 255, 255, .05);
+  pointer-events: none;
+}
+
+[data-theme="light"] .day-tab__ghost {
+  color: rgba(0, 0, 0, .06);
+}
+
+.day-tab__name {
+  position: relative;
+  max-width: 112px;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.15;
+  text-align: left;
+  text-transform: uppercase;
+  text-wrap: balance;
+  color: var(--text-secondary);
 }
 
 .day-tab.active {
   background: var(--accent-soft);
   border-color: var(--accent);
+  box-shadow: 0 0 18px var(--accent-glow);
+}
+
+.day-tab.active .day-tab__name {
   color: var(--accent);
+}
+
+.day-tab.active .day-tab__ghost {
+  color: var(--accent-glow);
 }
 
 .day-tab__editing {
