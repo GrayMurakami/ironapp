@@ -14,11 +14,11 @@ let hideTimer = null;
 let touchStartY = 0;
 
 async function handleSignOut() {
-  // const isDemo = auth.user?.email === import.meta.env.VITE_DEMO_EMAIL;
+  const isDemo = auth.user?.email === import.meta.env.VITE_DEMO_EMAIL;
 
-  // if (isDemo) {
-  //   await program.resetDemoProgram();
-  // }
+  if (isDemo) {
+    await program.resetDemoProgram();
+  }
 
   await auth.signOut();
   router.push('/login');
