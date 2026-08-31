@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/auth'
 import { useProgramStore } from '@/stores/program'
+import { useUiStore } from '@/stores/ui'
 import { getRandomPhrase } from '@/data/motivationalPhrases'
 import FinishSummary from './FinishSummary.vue'
 import ExerciseCard from './ExerciseCard.vue'
@@ -15,6 +16,7 @@ import '@/styles/shared.css'
 const auth = useAuthStore();
 const router = useRouter();
 const program = useProgramStore();
+const ui = useUiStore();
 
 const draggableBlocks = ref([]);
 const newExerciseName = ref('');
@@ -194,7 +196,10 @@ function closeSummary() {
 <template>
   <div class="board">
     <header class="board__head">
-      <h1 class="board__brand">
+      <h1
+        class="board__brand"
+        @click="ui.togglePanel()"
+        >
         {{ appNameDemo }}
       </h1>
 

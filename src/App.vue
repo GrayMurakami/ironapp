@@ -1,9 +1,11 @@
 <script setup>
 import { useRoute } from 'vue-router'
+import { useProgramStore } from '@/stores/program'
 import ThemeSwitch from '@/components/ThemeSwitch.vue'
 import TopPanel from '@/components/TopPanel.vue'
 
 const route = useRoute();
+const program = useProgramStore();
 </script>
 
 <template>
@@ -13,7 +15,7 @@ const route = useRoute();
       class="app-theme-switch"
     />
     <TopPanel
-      v-if="route.name === 'home'"
+      v-if="route.name === 'home' && program.hasDays"
     />
     <router-view />
   </div>

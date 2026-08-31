@@ -1,17 +1,35 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { watch, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useProgramStore } from '@/stores/program'
+import { useUiStore } from '@/stores/ui'
 import ThemeSwitch from '@/components/ThemeSwitch.vue'
 
 const auth = useAuthStore();
 const router = useRouter();
 const program = useProgramStore();
+const ui = useUiStore();
 
-const isVisible = ref(true);
 let hideTimer = null;
-let touchStartY = 0;
+
+function sheduleHide() {
+  clearTimeout(hideTimer);
+  hideTimer = setTimeout(() => {
+    ui.hidePanel();
+  }, 2666);
+}
+
+watch(
+  () => ui.isPanelVisible,
+  (visible) => {
+    if (visible) {
+      sheduleHide();
+    } else {
+      clearTimeout(hideTimer);
+    }
+  }
+);
 
 async function handleSignOut() {
   const isDemo = auth.user?.email === import.meta.env.VITE_DEMO_EMAIL;
@@ -22,48 +40,17 @@ async function handleSignOut() {
 
   await auth.signOut();
   router.push('/login');
-}
-
-function sheduleHide() {
-  clearTimeout(hideTimer);
-  hideTimer = setTimeout(() => {
-    isVisible.value = false;
-  }, 2666);
-}
-
-function showPanel() {
-  isVisible.value = true;
-  sheduleHide();
-}
-
-function hideNow() {
-  clearTimeout(hideTimer);
-  isVisible.value = false;
-}
-
-function onTouchStart(e) {
-  touchStartY = e.touches[0].clientY;
-}
-
-function onTouchEnd(e) {
-  const touchEndY = e.changedTouches[0].clientY;
-  const swipedDown = touchEndY - touchStartY > 50;
-  const startedNearTop = touchStartY < 40;
-
-  if (swipedDown && startedNearTop && !isVisible.value) {
-    showPanel();
-  }
+  ui.resetIntro();
 }
 
 onMounted(() => {
-  window.addEventListener('touchstart', onTouchStart);
-  window.addEventListener('touchend', onTouchEnd);
-  sheduleHide();
+  if (!ui.introShown) {
+    ui.showPanel();
+    ui.markIntroShown();
+  }
 });
 
 onUnmounted(() => {
-  window.removeEventListener('touchstart', onTouchStart)
-  window.removeEventListener('touchend', onTouchEnd)
   clearTimeout(hideTimer)
 });
 </script>
@@ -71,17 +58,17 @@ onUnmounted(() => {
 <template>
   <div
     class="top-panel"
-    :class="{ 'top-panel--hidden': !isVisible }"
+    :class="{ 'top-panel--hidden': !ui.isPanelVisible }"
   >
     <ThemeSwitch
-      @click="hideNow"
+      @click="ui.hidePanel()"
     />
 
     <button
       class="top-panel__edit"
       :class="{ 'top-panel__edit--active': program.isEditMode }"
       aria-label="Edit mode"
-      @click="program.toggleEditMode(); showPanel()"
+      @click="program.toggleEditMode(); ui.showPanel()"
     >
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
         <path d="M17 3a2.83 2.83 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
