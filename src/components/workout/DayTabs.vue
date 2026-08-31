@@ -139,12 +139,14 @@ async function removeCurrentDay() {
 
 .day-tab__name {
   position: relative;
-  max-width: 112px;
+  max-width: 100px;
   font-size: 13px;
   font-weight: 800;
-  line-height: 1.15;
+  line-height: 1.25;
   text-align: left;
   text-transform: uppercase;
+  white-space: normal;
+  word-break: break-word;
   text-wrap: balance;
   color: var(--text-secondary);
 }

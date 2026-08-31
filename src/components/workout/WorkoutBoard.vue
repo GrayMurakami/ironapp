@@ -392,7 +392,7 @@ function closeSummary() {
   font-family: var(--display);
   font-size: 32px;
   font-weight: 400;
-  letter-spacing: .5px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
   color: var(--accent);
   text-shadow: 0 0 30px var(--accent-glow);
