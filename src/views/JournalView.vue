@@ -134,7 +134,18 @@ onMounted(() => {
               class="log-card__arrow"
               :class="{ open: expandedLogId === log.id }"
             >
-              ▼
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5.41 7.59L4 9l8 8 8-8-1.41-1.41L12 14.17"
+                  fill="currentColor"
+                />
+              </svg>
             </span>
           </div>
         </button>
@@ -328,7 +339,7 @@ onMounted(() => {
 .log-card__head-right {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .log-card__duration {

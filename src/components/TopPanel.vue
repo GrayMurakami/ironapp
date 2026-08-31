@@ -97,9 +97,9 @@ onUnmounted(() => {
       aria-label="Log out"
       @click="handleSignOut"
     >
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-        <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-        <path d="M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path d="M9 21H4a2 2 0 01-2-2V5a2 2 0 012-2h5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
       </svg>
     </button>
   </div>
@@ -181,15 +181,10 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+  border-color: var(--error-red);
   background: var(--bg-card);
-  border: 1.5px solid var(--border);
-  color: var(--text-secondary);
+  color: var(--error-red);
   cursor: pointer;
   transition: border-color 0.2s, color 0.2s;
-}
-
-.top-panel__exit:hover {
-  border-color: var(--error-red);
-  color: var(--error-red);
 }
 </style>
