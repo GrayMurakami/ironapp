@@ -23,7 +23,7 @@ const route = useRoute();
 .app-theme-switch {
   position: fixed; 
   top: 30px; 
-  left: 50%;
+  left: 45%;
   transform: translateX(calc(195px - 100%));
   z-index: 10 
 }
