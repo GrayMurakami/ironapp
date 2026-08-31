@@ -129,6 +129,7 @@ function formatDate(date) {
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-transform: uppercase;
   gap: 15px;
 }
 
