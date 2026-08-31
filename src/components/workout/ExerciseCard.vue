@@ -412,13 +412,13 @@ function updateSetsCount(newCount) {
 .exercise-card__check {
   width: 40px;
   height: 36px;
-  margin-left: 7px;
   border-radius: 8px;
   background: var(--bg);
   border: 2px solid var(--border);
   color: var(--text-muted);
   font-family: var(--display);
   font-size: 20px;
+  margin-left: 10px;
   cursor: pointer;
   transition: all .2s;
 }
