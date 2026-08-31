@@ -41,11 +41,11 @@ async function removeCurrentDay() {
 </script>
 
 <template>
-  <div class="day-tabs">
+  <div class="day-tabs__main">
     <button
       v-for="(day, index) in days"
       :key="day.id"
-      class="day-tab"
+      class="day-tab__label"
       :class="{
         active: activeDayIndex === index,
         'day-tab__editing': isEditMode && activeDayIndex === index
@@ -96,7 +96,7 @@ async function removeCurrentDay() {
 </template>
 
 <style scoped>
-.day-tabs {
+.day-tabs__main {
   display: flex;
   gap: 10px;
   overflow-x: auto;
@@ -104,11 +104,11 @@ async function removeCurrentDay() {
   scrollbar-width: none;
 }
 
-.day-tabs::-webkit-scrollbar {
+.day-tabs__main::-webkit-scrollbar {
   display: none;
 }
 
-.day-tab {
+.day-tab__label {
   position: relative;
   flex: none;
   display: flex;
@@ -149,17 +149,17 @@ async function removeCurrentDay() {
   color: var(--text-secondary);
 }
 
-.day-tab.active {
+.day-tab__label.active {
   background: var(--accent-soft);
   border-color: var(--accent);
   box-shadow: 0 0 18px var(--accent-glow);
 }
 
-.day-tab.active .day-tab__name {
+.day-tab__label.active .day-tab__name {
   color: var(--accent);
 }
 
-.day-tab.active .day-tab__ghost {
+.day-tab__label.active .day-tab__ghost {
   color: var(--accent-glow);
 }
 

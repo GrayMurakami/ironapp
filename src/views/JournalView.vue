@@ -57,6 +57,17 @@ onMounted(() => {
 
 <template>
   <div class="journal">
+    <button
+      class="journal__back"
+      @click="router.push('/')"
+    >
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+        <path d="M11 6L5 12L11 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M18 6L12 12L18 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+        Back
+    </button>
+
     <header class="journal__head">
       <h1 class="journal__title">
         Journal
@@ -202,17 +213,6 @@ onMounted(() => {
         </div>
       </div>
     </div>
-
-    <button
-      class="journal__back"
-      @click="router.push('/')"
-    >
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-        <path d="M11 6L5 12L11 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
-        <path d="M18 6L12 12L18 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
-      </svg>
-        Back
-    </button>
   </div>
 </template>
 
@@ -220,7 +220,23 @@ onMounted(() => {
 .journal {
   max-width: 430px;
   margin: 0 auto;
-  padding: 90px 24px 40px;
+  padding: 40px 24px 40px;
+}
+
+.journal__back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  margin: 15px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
 }
 
 .journal__head {
@@ -444,21 +460,5 @@ onMounted(() => {
 .log-set-edit input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
-}
-
-.journal__back {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  margin-top: 20px;
-  padding: 8px 14px;
-  border-radius: 10px;
-  background: var(--bg-card);
-  color: var(--text-secondary);
-  font-family: var(--font);
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
 }
 </style>
