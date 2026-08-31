@@ -6,9 +6,10 @@ import { useAuthStore } from '@/stores/auth'
 import { useProgramStore } from '@/stores/program'
 import { useUiStore } from '@/stores/ui'
 import { getRandomPhrase } from '@/data/motivationalPhrases'
-import FinishSummary from './FinishSummary.vue'
-import ExerciseCard from './ExerciseCard.vue'
 import DayTabs from './DayTabs.vue'
+import ExerciseCard from './ExerciseCard.vue'
+import FinishSummary from './FinishSummary.vue'
+import ConfirmModal from '@/components/ConfirmModal.vue'
 import RestTimer from './RestTimer.vue'
 import draggable from 'vuedraggable' 
 import '@/styles/shared.css'
@@ -29,7 +30,11 @@ const restExerciseIndex = ref(0);
 const workoutStartedAt = ref(null);
 const showSummary = ref(false);
 const summaryData = ref(null);
+
+const showExerciseRemoveConfirm = ref(false);
+const exerciseToRemove = ref(null);
 const isFinishing = ref(false);
+const showFinishConfirm = ref(false);
 
 const { appNameDemo } = storeToRefs(auth);
 const { days } = storeToRefs(program);
@@ -191,6 +196,27 @@ function closeSummary() {
   showSummary.value = false;
   summaryData.value = null;
 }
+
+function askRemoveExercise(exerciseId) {
+  exerciseToRemove.value = exerciseId;
+  showExerciseRemoveConfirm.value = true;
+}
+
+async function confirmRemoveExercise() {
+  showExerciseRemoveConfirm.value = false;
+  await program.deleteExercise(exerciseToRemove.value);
+  exerciseToRemove.value = null;
+}
+
+function askFinish() {
+  if (doneSets.value === 0) return
+  showFinishConfirm.value = true;
+}
+
+function confirmFinish() {
+  showFinishConfirm.value = false;
+  finishWorkout();
+}
 </script>
 
 <template>
@@ -313,7 +339,7 @@ function closeSummary() {
             :index="activeDay.program_exercises.indexOf(exercise)"
             :is-edit-mode="program.isEditMode"
             :is-superset-first="i === 0"
-            @remove="removeExercise(exercise.id)"
+            @remove="askRemoveExercise(exercise.id)"
             @unlink="unlinkExercise(exercise)"
             @start-rest="startRest"
             @activity="markWorkoutStarted"
@@ -326,7 +352,7 @@ function closeSummary() {
           :index="activeDay.program_exercises.indexOf(block.exercises[0])"
           :is-edit-mode="program.isEditMode"
           :next-exercise="getNextExercise(block)"
-          @remove="removeExercise(block.exercises[0].id)"
+          @remove="askRemoveExercise(block.exercises[0].id)"
           @link="linkExercises(block.exercises[0], $event)"
           @start-rest="startRest"
           @activity="markWorkoutStarted"
@@ -352,8 +378,8 @@ function closeSummary() {
     <button
       v-if="activeDay"
       class="finish-btn"
-      :disabled="isFinishing"
-      @click="finishWorkout"
+      :disabled="isFinishing || doneSets === 0"
+      @click="askFinish"
     >
       {{ isFinishing ? 'Saving・・・' : 'Finish workout' }}
     </button>
@@ -365,6 +391,24 @@ function closeSummary() {
     :exercise-name="restExerciseName"
     :exercise-index="restExerciseIndex"
     @close="closeRest"
+  />
+
+  <ConfirmModal
+    v-if="showExerciseRemoveConfirm"
+    title="Delete this exercise?"
+    message="This can't be undone."
+    confirm-label="Delete"
+    @confirm="confirmRemoveExercise"
+    @cancel="showExerciseRemoveConfirm = false"
+  />
+
+  <ConfirmModal
+    v-if="showFinishConfirm"
+    title="Finish workout?"
+    message="Sets not marked done will stay unfinished. This can't be undone."
+    confirm-label="Finish"
+    @confirm="confirmFinish"
+    @cancel="showFinishConfirm = false"
   />
 
   <FinishSummary
@@ -396,6 +440,7 @@ function closeSummary() {
   text-transform: uppercase;
   color: var(--accent);
   text-shadow: 0 0 30px var(--accent-glow);
+  cursor: pointer;
 }
 
 .board__actions {

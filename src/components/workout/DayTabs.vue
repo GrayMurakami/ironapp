@@ -1,6 +1,7 @@
 <script setup>
-import { nextTick } from 'vue'
+import { ref, nextTick } from 'vue'
 import { useProgramStore } from '@/stores/program'
+import ConfirmModal from '@/components/ConfirmModal.vue'
 
 const props = defineProps({
   days: { type: Array, required: true },
@@ -12,6 +13,7 @@ const props = defineProps({
 const emit = defineEmits(['update:activeDayIndex']);
 
 const program = useProgramStore();
+const showRemoveConfirm = ref(false);
 let renameTimer = null;
 
 function selectDay(index) {
@@ -25,18 +27,24 @@ function renameDay(day) {
   }, 600);
 }
 
+function askRemoveDay() {
+  showRemoveConfirm.value = true;
+}
+
 async function addNewDay() {
   await program.addDay();
   await nextTick();
   emit('update:activeDayIndex', props.days.length - 1);
 }
 
-async function removeCurrentDay() {
+async function confirmRemoveDay() {
+  showRemoveConfirm.value = false;
   const dayId = props.activeDay.id;
+
   await program.deleteDay(dayId);
   if (props.activeDayIndex >= props.days.length - 1) {
     emit('update:activeDayIndex', Math.max(0, props.days.length - 1));
-  }
+  }  
 }
 </script>
 
@@ -88,11 +96,20 @@ async function removeCurrentDay() {
     <button
       v-if="activeDay"
       class="day-actions__remove"
-      @click="removeCurrentDay"
+      @click="askRemoveDay"
     >
       ✕ Remove
     </button>
   </div>
+
+  <ConfirmModal
+    v-if="showRemoveConfirm"
+    title="Delete this day?"
+    :message="`'${activeDay?.name}' and all its exercises will be removed. This can't be undone.`"
+    confirm-label="Delete"
+    @confirm="confirmRemoveDay"
+    @cancel="showRemoveConfirm = false"
+  />
 </template>
 
 <style scoped>

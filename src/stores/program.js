@@ -89,6 +89,9 @@ export const useProgramStore = defineStore('program', () => {
   }
 
   async function addExercise(dayId, name) {
+    const day = days.value.find((d) => d.id === dayId);
+    const orderIndex = day ? day.program_exercises.length : 0;
+
     const { data, error: insertError } = await supabase
       .from('program_exercises')
       .insert({
@@ -97,14 +100,13 @@ export const useProgramStore = defineStore('program', () => {
         sets: 3,
         rest_seconds: 90,
         sets_data: Array.from({ length: 3 }, () => ({ weight: null, reps: null, done: false })),
-        order_index: 999,
+        order_index: orderIndex,
       })
       .select()
       .single()
 
     if (insertError) throw insertError
 
-    const day = days.value.find((d) => d.id === dayId);
     if (day) {
       day.program_exercises.push(data)
     }
