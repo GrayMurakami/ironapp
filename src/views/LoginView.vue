@@ -130,13 +130,13 @@ function resetFields() {
             :class="{ active: !isSignUp }"
             @click="mode = 'signin'; resetFields()"  
           >
-            SignIn
+            Sign In
           </button>
           <button
             :class="{ active: isSignUp }"
             @click="mode = 'signup'; resetFields()"
           >
-            SignUp
+            Sign Up
           </button>
         </div>
 
@@ -307,8 +307,9 @@ function resetFields() {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
+  font-size: 27px;
   margin-bottom: 18px;
+  padding-bottom: 4px;
 }
 
 .confirm__title {
