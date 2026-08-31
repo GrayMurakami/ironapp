@@ -14,6 +14,7 @@ const program = useProgramStore();
       v-if="route.name === 'login'"
       class="app-theme-switch"
     />
+
     <TopPanel
       v-if="route.name === 'home' && program.hasDays"
     />
