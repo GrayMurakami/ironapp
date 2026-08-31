@@ -107,9 +107,12 @@ onMounted(() => {
         :key="log.id"
         class="log-card"
       >
-        <button
+        <div
           class="log-card__head"
+          role="button"
+          tabindex="0"
           @click="toggleExpand(log.id)"
+          @keydown.enter="toggleExpand(log.id)"
         >
           <div class="log-card__head-left">
             <span class="log-card__day">
@@ -148,7 +151,7 @@ onMounted(() => {
               </svg>
             </span>
           </div>
-        </button>
+        </div>
 
         <div
           v-if="expandedLogId === log.id"
@@ -312,8 +315,6 @@ onMounted(() => {
   align-items: center;
   justify-content: space-between;
   padding: 16px;
-  background: none;
-  border: none;
   cursor: pointer;
 }
 
