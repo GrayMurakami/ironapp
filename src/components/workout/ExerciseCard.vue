@@ -338,7 +338,7 @@ function updateSetsCount(newCount) {
 
 .exercise-card__label {
   font-family: var(--mono);
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -360,7 +360,7 @@ function updateSetsCount(newCount) {
 
 .exercise-card__label--reps {
   color: var(--cyan);
-  margin-left: 25px;
+  margin-left: 2px;
 }
 
 .exercise-card__unit {
