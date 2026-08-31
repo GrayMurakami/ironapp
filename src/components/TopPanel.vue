@@ -36,17 +36,17 @@ async function handleSignOut() {
 
   if (isDemo) {
     await program.resetDemoProgram();
+    ui.resetIntro(auth.user?.id);
   }
 
   await auth.signOut();
   router.push('/login');
-  ui.resetIntro();
 }
 
 onMounted(() => {
-  if (!ui.introShown) {
+  if (ui.shouldShowIntro(auth.user?.id)) {
     ui.showPanel();
-    ui.markIntroShown();
+    ui.markIntroShown(auth.user?.id);
   }
 });
 

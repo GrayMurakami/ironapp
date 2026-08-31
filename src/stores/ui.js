@@ -2,15 +2,21 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
 export const useUiStore = defineStore('ui', () => {
-  const introShown = ref(false);
   const isPanelVisible = ref(false);
 
-  function markIntroShown() {
-    introShown.value = true;
+  function shouldShowIntro(userId) {
+    if (!userId) return false
+    return !localStorage.getItem(`intro_shown_${userId}`);
   }
 
-  function resetIntro() {
-    introShown.value = false;
+  function markIntroShown(userId) {
+    if (!userId) return
+    localStorage.setItem(`intro_shown_${userId}`, 'true')
+  }
+
+  function resetIntro(userId) {
+    if (!userId) return
+    localStorage.removeItem(`intro_shown_${userId}`)
   }
 
   function showPanel() {
@@ -26,8 +32,8 @@ export const useUiStore = defineStore('ui', () => {
   }
 
   return {
-    introShown,
     isPanelVisible,
+    shouldShowIntro,
     markIntroShown,
     resetIntro,
     showPanel,
