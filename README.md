@@ -10,13 +10,12 @@ Built as a personal project to practice modern Vue 3 patterns (Composition API, 
   Edit mode with supersets, Rest timer, Finish summary, Journal
 -->
  
-![Login screen](./screenshots/login.png)
-![Onboarding](./screenshots/onboarding.png)
-![Workout board](./screenshots/board.png)
-![Edit mode](./screenshots/edit-mode.png)
-![Rest timer](./screenshots/rest-timer.png)
-![Finish summary](./screenshots/finish.png)
-![Journal](./screenshots/journal.png)
+![Login screen](./screenshots/login.jpg)
+![Onboarding](./screenshots/onboarding.jpg)
+![Workout board](./screenshots/board.jpg)
+![Edit mode](./screenshots/edit-mode.jpg)
+![Rest timer](./screenshots/rest-timer.jpg)
+![Finish summary](./screenshots/finish.jpg)
  
 ## Live Demo
  
