@@ -564,6 +564,8 @@ function confirmFinish() {
   border-radius: 18px;
   border: 1.5px dashed var(--accent);
   background: var(--accent-soft);
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .superset__tag {
@@ -591,6 +593,8 @@ function confirmFinish() {
   color: var(--text);
   font-family: var(--font);
   font-size: 14px;
+  user-select: auto;
+  -webkit-user-select: auto;
 }
 
 .add-exercise button {
