@@ -4,12 +4,6 @@ A mobile-first workout tracking app built with Vue 3. Design your own training p
  
 Built as a personal project to practice modern Vue 3 patterns (Composition API, Pinia, Supabase) end-to-end from database schema to a polished, animated mobile UI.
  
-<!-- 
-  📸 Screenshots go here
-  Suggested: Login screen, Onboarding (3 steps), Main workout board (dark + light theme), 
-  Edit mode with supersets, Rest timer, Finish summary, Journal
--->
- 
 ![Login screen](./screenshots/login.jpg)
 ![Onboarding](./screenshots/onboarding.jpg)
 ![Workout board](./screenshots/board.jpg)
