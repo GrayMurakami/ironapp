@@ -17,7 +17,7 @@ function sheduleHide() {
   clearTimeout(hideTimer);
   hideTimer = setTimeout(() => {
     ui.hidePanel();
-  }, 2666);
+  }, 992666);
 }
 
 watch(
@@ -105,7 +105,7 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: color-mix(in srgb, var(--bg) 70%, transparent);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
