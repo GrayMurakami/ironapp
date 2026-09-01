@@ -16,7 +16,6 @@ Built as a personal project to practice modern Vue 3 patterns (Composition API, 
 ![Edit mode](./screenshots/edit-mode.jpg)
 ![Rest timer](./screenshots/rest-timer.jpg)
 ![Finish summary](./screenshots/finish.jpg)
-![Journal](./screenshots/journal.jpg)
  
 ## Live Demo
  
