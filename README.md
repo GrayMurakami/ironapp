@@ -19,7 +19,7 @@ Built as a personal project to practice modern Vue 3 patterns (Composition API, 
  
 ## Live Demo
  
-🔗 [Try it live](https://ironman-bygray.netlify.app/)
+🔗 [Try it live](https://ironapp-bygray.netlify.app/)
  
 Use the **Try the Demo** button on the login screen - no account needed. Demo data resets on every logout so it always starts fresh.
  
