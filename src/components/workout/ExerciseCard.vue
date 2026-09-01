@@ -236,6 +236,8 @@ function updateSetsCount(newCount) {
   border: 1px solid var(--border);
   box-shadow: var(--shadow-card);
   padding: 13px 13px 17px;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .exercise-card__edit {
@@ -263,6 +265,8 @@ function updateSetsCount(newCount) {
   color: var(--text-muted);
   cursor: grab;
   touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .exercise-card__drag:active {
