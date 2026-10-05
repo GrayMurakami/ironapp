@@ -71,6 +71,20 @@ function updateSetsCount(newCount) {
   props.exercise.sets = count;
   scheduleSave();
 }
+
+function onSetsInput(e) {
+  const raw = e.target.value;
+  if (raw === '') return;
+
+  const numberOfSets = Number(raw);
+  if (!Number.isInteger(numberOfSets) || numberOfSets < 1) return;
+
+  updateSetsCount(numberOfSets);
+}
+
+function onSetsBlur(e) {
+  e.target.value = props.exercise.sets;
+}
 </script>
 
 <template>
@@ -119,7 +133,8 @@ function updateSetsCount(newCount) {
           :value="exercise.sets"
           type="number"
           inputmode="numeric"
-          @input="updateSetsCount(Number($event.target.value))"
+          @input="onSetsInput"
+          @blur="onSetsBlur"
         />
       </div>
 
@@ -238,6 +253,11 @@ function updateSetsCount(newCount) {
   padding: 13px 13px 17px;
   user-select: none;
   -webkit-user-select: none;
+}
+
+.exercise-card input {
+  user-select: text;
+  -webkit-user-select: text;
 }
 
 .exercise-card__edit {
