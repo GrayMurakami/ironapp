@@ -14,13 +14,19 @@ export const useProgramStore = defineStore('program', () => {
     isEditMode.value = !isEditMode.value;
   }
 
+  async function getUserId() {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.user) throw new Error('Session expired. Please log in again.');
+    return session.user.id;
+  }
+
   async function saveInitialProgram(newDays) {
-    const { data: { user } } = await supabase.auth.getUser();
+    const userId = await getUserId();
 
     for (const day of newDays) {
       const { data: dayRow, error: dayError } = await supabase
         .from('program_days')
-        .insert({ name: day.name, order_index: newDays.indexOf(day), user_id: user.id })
+        .insert({ name: day.name, order_index: newDays.indexOf(day), user_id: userId })
         .select()
         .single()
 
@@ -57,14 +63,14 @@ export const useProgramStore = defineStore('program', () => {
   }
 
   async function addDay() {
-    const { data: { user } } = await supabase.auth.getUser();
+    const userId = await getUserId();
     
     const { data, error: insertDayError } = await supabase
       .from('program_days')
       .insert({
         name: `Day ${days.value.length + 1}`,
         order_index: days.value.length,
-        user_id: user.id,
+        user_id: userId,
       })
       .select()
       .single()
@@ -197,12 +203,12 @@ export const useProgramStore = defineStore('program', () => {
   }
 
   async function saveWorkoutLog({ dayId, dayName, startedAt, exercises }) {
-    const { data: { user } } = await supabase.auth.getUser();
+    const userId = await getUserId();
 
     const { data: logRow, error: logError } = await supabase
       .from('workout_logs')
       .insert({
-        user_id: user.id,
+        user_id: userId,
         day_id: dayId,
         day_name: dayName,
         started_at: startedAt,
@@ -261,12 +267,12 @@ export const useProgramStore = defineStore('program', () => {
   }
 
   async function resetDemoProgram() {
-    const { data: { user } } = await supabase.auth.getUser();
+    const userId = await getUserId();
 
     const { error: resetDemoError } = await supabase
       .from('program_days')
       .delete()
-      .eq('user_id', user.id)
+      .eq('user_id', userId)
 
     if (resetDemoError) throw resetDemoError
 
