@@ -190,7 +190,7 @@ function onSetsBlur(e) {
           class="exercise-card__label exercise-card__label--reps"
           :class="{ 'is-done': set.done }"
         >
-          rep
+          reps
         </span>
         <div 
           class="exercise-card__box"
