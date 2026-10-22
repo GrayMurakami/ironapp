@@ -83,7 +83,7 @@ function formatDate(date) {
       class="finish-close"
       @click="emit('close')"
     >
-      Done for 
+      Done for today
     </button>
   </div>
 </template>
