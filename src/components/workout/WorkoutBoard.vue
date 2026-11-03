@@ -10,15 +10,12 @@ import ExerciseCard from './ExerciseCard.vue'
 import DayTabs from './DayTabs.vue'
 import RestTimer from './RestTimer.vue'
 import draggable from 'vuedraggable' 
-import iconJournal from '@/assets/icons/journal.png'
-import iconEdit from '@/assets/icons/edit.png'
-import iconLogout from '@/assets/icons/logout.png'
 import '@/styles/shared.css'
 
 const auth = useAuthStore();
 const router = useRouter();
 const program = useProgramStore();
-const isEditMode = ref(false);
+
 const draggableBlocks = ref([]);
 const newExerciseName = ref('');
 const activeDayIndex = ref(0);
@@ -82,10 +79,6 @@ function startRest({ seconds, name, index }) {
 
 function closeRest() {
   restSeconds.value = null;
-}
-
-function toggleEditMode() {
-  isEditMode.value = !isEditMode.value;
 }
 
 function buildBlocks() {
@@ -211,22 +204,13 @@ function closeSummary() {
           aria-label="Journal"
           @click="router.push('/journal')"
         >
-          <img :src="iconJournal" alt="" />
-        </button>
-        <button
-          class="icon-btn"
-          :class="{ active: isEditMode }"
-          aria-label="Edit"
-          @click="toggleEditMode"
-        >
-          <img :src="iconEdit" alt="" />
-        </button>
-        <button
-          class="icon-btn"
-          aria-label="Log out"
-          @click="auth.signOut()"
-        >
-          <img :src="iconLogout" alt="" />
+          <span class="icon-btn__label">
+            log
+          </span>
+          <svg class="icon-btn__icon" width="19" height="19" viewBox="0 0 24 24" fill="none">
+            <path d="M4 4.5A2.5 2.5 0 016.5 2H18a1 1 0 011 1v16.5a.5.5 0 01-.5.5H6.5A2.5 2.5 0 014 17.5v-13z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+            <path d="M8 7h7M8 11h7M8 15h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+          </svg>
         </button>
       </div>
     </header>
@@ -235,7 +219,7 @@ function closeSummary() {
       :days="days"
       v-model:active-day-index="activeDayIndex"
       :active-day="activeDay"
-      :is-edit-mode="isEditMode"
+      :is-edit-mode="program.isEditMode"
     />
 
     <div
@@ -295,8 +279,8 @@ function closeSummary() {
       item-key="0"
       tag="div"
       class="exercises"
-      :handle="isEditMode ? '.exercise-card__drag' : undefined"
-      :delay="isEditMode ? 0 : 500"
+      :handle="program.isEditMode ? '.exercise-card__drag' : undefined"
+      :delay="program.isEditMode ? 0 : 500"
       :delay-on-touch-only="true"
       :touch-start-threshold="10"
       :force-fallback="true"
@@ -310,7 +294,7 @@ function closeSummary() {
         >
           <div class="superset__tag">
             <span
-              v-if="isEditMode"
+              v-if="program.isEditMode"
               class="exercise-card__drag"
             >
               ⠿
@@ -322,7 +306,7 @@ function closeSummary() {
             :key="exercise.id"
             :exercise="exercise"
             :index="activeDay.program_exercises.indexOf(exercise)"
-            :is-edit-mode="isEditMode"
+            :is-edit-mode="program.isEditMode"
             :is-superset-first="i === 0"
             @remove="removeExercise(exercise.id)"
             @unlink="unlinkExercise(exercise)"
@@ -335,7 +319,7 @@ function closeSummary() {
           v-else
           :exercise="block.exercises[0]"
           :index="activeDay.program_exercises.indexOf(block.exercises[0])"
-          :is-edit-mode="isEditMode"
+          :is-edit-mode="program.isEditMode"
           :next-exercise="getNextExercise(block)"
           @remove="removeExercise(block.exercises[0].id)"
           @link="linkExercises(block.exercises[0], $event)"
@@ -346,7 +330,7 @@ function closeSummary() {
     </draggable>
 
     <div
-      v-if="activeDay && isEditMode"
+      v-if="activeDay && program.isEditMode"
       class="add-exercise"
     >
       <input
@@ -389,14 +373,14 @@ function closeSummary() {
 .board {
   max-width: 430px;
   margin: 0 auto;
-  padding: 90px 24px 40px;
+  padding: 35px 24px 40px;
 }
 
 .board__head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 18px;
+  margin-bottom: 40px;
 }
 
 .board__brand {
@@ -415,27 +399,29 @@ function closeSummary() {
 }
 
 .icon-btn {
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
-  background: var(--bg-card);
-  border: 1.5px solid var(--border);
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 8px;
+  height: 42px;
+  padding: 0 15px;
+  border-radius: 12px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  color: var(--text-secondary);
   cursor: pointer;
-  padding: 0;
 }
 
-.icon-btn img {
-  width: 18px;
-  height: 18px;
-  object-fit: contain;
+.icon-btn__icon {
+  flex: none;
+  color: var(--accent);
 }
 
-.icon-btn.active {
-  background: var(--accent-soft);
-  border-color: var(--accent);
+.icon-btn__label {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
 }
 
 .day-progress {
@@ -443,7 +429,7 @@ function closeSummary() {
   border-radius: 2px;
   background: var(--border);
   overflow: hidden;
-  margin-top: 26px;
+  margin-top: 36px;
   margin-bottom: 16px;
 }
 
@@ -482,6 +468,7 @@ function closeSummary() {
 .stat-cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  margin-top: 15px;
   gap: 8px;
 }
 

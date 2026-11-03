@@ -5,10 +5,15 @@ import { supabase } from '@/lib/supabase'
 export const useProgramStore = defineStore('program', () => {
   const days = ref([]);
   const loaded = ref(false);
+  const isEditMode = ref(false);
   const error = ref(null);
 
   const hasDays = computed(() => days.value.length > 0);
  
+  function toggleEditMode() {
+    isEditMode.value = !isEditMode.value;
+  }
+
   async function saveInitialProgram(newDays) {
     const { data: { user } } = await supabase.auth.getUser();
 
@@ -253,11 +258,26 @@ export const useProgramStore = defineStore('program', () => {
     }
   }
 
+  async function resetDemoProgram() {
+    const { data: { user } } = await supabase.auth.getUser();
+
+    const { error: resetDemoError } = await supabase
+      .from('program_days')
+      .delete()
+      .eq('user_id', user.id)
+
+    if (resetDemoError) throw resetDemoError
+
+    days.value = [];
+  }
+
   return {
     days,
     loaded,
+    isEditMode,
     error,
     hasDays,
+    toggleEditMode,
     saveInitialProgram,
     updateDayName,
     addDay,
@@ -269,6 +289,7 @@ export const useProgramStore = defineStore('program', () => {
     unlinkExercise,
     reorderExercises,
     saveWorkoutLog,
+    resetDemoProgram,
     fetchDays
   }
 });

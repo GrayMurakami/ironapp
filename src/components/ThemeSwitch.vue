@@ -1,20 +1,15 @@
 <script setup>
-import { ref, watchEffect } from 'vue'
+import { useThemeStore } from '@/stores/theme'
 
-const theme = ref(localStorage.getItem('theme') || 'dark');
-
-watchEffect(() => {
-  document.documentElement.setAttribute('data-theme', theme.value);
-  localStorage.setItem('theme', theme.value);
-});
+const themeStore = useThemeStore();
 </script>
 
 <template>
   <button
     class="switch"
-    :class="{ 'is-dark': theme === 'dark' }"
+    :class="{ 'is-dark': themeStore.theme === 'dark' }"
     aria-label="Switch theme"
-    @click="theme = theme === 'dark' ? 'light' : 'dark'"
+    @click="themeStore.toggle()"
   >
     <span class="switch__icon">
       ☀
