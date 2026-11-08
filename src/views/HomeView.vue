@@ -22,7 +22,7 @@ onMounted(() => {
       v-if="!loaded"
       class="home__loading"
     >
-      Loading ・・・
+       ・・・
     </div>
 
     <div
