@@ -10,6 +10,7 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       manifest: {
+        id: "/",
         name: "IronMan / IronWoman",
         short_name: "IRON",
         description: "A mobile-first workout tracker with custom training programs, live logging, and a workout journal.",
