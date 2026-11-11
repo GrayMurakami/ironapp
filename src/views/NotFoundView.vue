@@ -67,7 +67,7 @@ const image = '/404.jpg'
               status
             </span>
             <span class="meta__val meta__val--acc">
-              404 / not_found
+              404 / 
             </span>
           </div>
         </div>
